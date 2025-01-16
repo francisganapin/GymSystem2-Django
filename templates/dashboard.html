@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Classes{% endblock %}
+
+{% block content %}
+<style>
+     .stat {
+            background-color: pink;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 150px;
+        }
+
+        .cases {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .case {
+            background-color: #044d66;
+            padding: 15px;
+            border-radius: 8px;
+            width: 150px;
+            text-align: center;
+        }
+        .text-color{
+            color: red;
+        }
+    
+</style>
+<div class="main-content">
+
+    <div class="stats">
+
+        <div class="stat">
+            <h3>Date</h3>
+            <p>{{today}}</p>
+        </div>
+    
+        <div class="stat">
+            <div class="text-color">
+            <h3>Expired</h3>
+            <p>{{count_expired}}</p>
+            </div>
+        </div>
+
+        <div class="stat">
+            <h3>Total Members</h3>
+            {%for item in total_member %}
+            <p>{{item.total_member}}</p>
+            {%endfor%}
+        </div>
+        <div class="stat">
+
+            {%for item in gender_count %}
+            <h3>{{item.gender}}:{{item.count}}</h3>
+            {%endfor%}
+
+        </div>
+
+        <div class="stat">
+            <h3>Total Sale</h3>
+            <p>{{total_sales}}</p>
+        </div>
+
+        <div class="stat">
+            <h3>Discounted</h3>
+            <p>Sale</p>
+        </div>    
+
+    </div>
+
+  
+
+</div>
+
+
+{% endblock %}

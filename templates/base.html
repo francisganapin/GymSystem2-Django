@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Love Creatine System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #0a3849;
+            color: white;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #033046;
+            height: 100vh;
+            position: fixed;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 10px;
+            display: block;
+            background-color: #044d66;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #067a9c;
+        }
+
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+       
+
+        .announcement {
+            margin-top: 290px;
+            background-color: #044d66;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        picture {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        picture img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Admin Menu</h2>
+        <ul>
+            <li><a href="{% url 'dash_board_views' %}">Dashboard</a></li>
+            <li><a href="{% url 'member_views' %}">Member Record</a></li>
+            <li><a href="#">Login Member</a></li>
+            <li><a href="#">Trainer Record</a></li>
+            <li><a href="#">Sales Record</a></li>
+            <li><a href="#">Gym Equipment Info</a></li>
+            <li><a href="#">Classes Record</a></li>
+            <li><a href="#">Inventory Record</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Logout</a></li>
+        </ul>
+        <picture>
+            <source srcset="no_faces.jpg" type="image/webp">
+            <source srcset="no_faces.jpg" type="image/jpeg">
+            <img src="no_faces.jpg" alt="Faceless Man">
+        </picture>
+    </div>
+
+    <div class="header">
+        <h1>LoveCreatine Gym System</h1>
+        <p>Love Ko Kayo Gym Shop Workout</p>
+    </div>
+
+    <div class="main-content">
+        {% block content %}
+        <!-- Main content goes here -->
+        {% endblock %}
+    </div>
+
+
+
+</body>
+</html>
