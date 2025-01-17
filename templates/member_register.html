@@ -1,0 +1,8 @@
+
+<!-- Login form -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="id_card">ID Card:</label>
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+</form>

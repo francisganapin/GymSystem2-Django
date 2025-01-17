@@ -20,7 +20,7 @@ class GymSale(models.Model):
     id_card = models.CharField(max_length=50, unique=True)                
     sale_date = models.DateField()           
     payment_method = models.CharField(max_length=100)  
-    sale_price = models.IntegerField(max_length=100)
+    sale_price = models.IntegerField()
     expiry = models.DateField()
 
     class Meta:

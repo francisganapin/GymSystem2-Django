@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.db import connection
 from datetime import date
 from .models import GymMember,GymSale
 # Create your views here.
-from django.utils import timezone
+from .forms import MemberLoginForm,MemberRegisterForm
+
 
 def dash_board_views(request):
     """ count gender number"""
@@ -68,15 +70,46 @@ def member_views(request):
 
 
 
+def member_login(request):
+    member_data = None
+    error_message = None
+
+    if request.method == 'POST':
+        form = MemberLoginForm(request.POST)
+        if form.is_valid():
+            id_card = form.cleaned_data['id_card']
+            try:
+                member_data = GymMember.objects.get(id_card=id_card)
+                print(f"Member data: {member_data}")
+            except GymMember.DoesNotExist:
+                error_message = 'He was not member or he was not exist'
+    else:
+        form = MemberLoginForm()
+
+    context = {'form':form,
+             'member_data':member_data,
+             'error_message':error_message}
+
+    return render(request,'member_login.html',context)
 
 
 
 
 
 
+def member_register(request):
+    if request.method == 'POST':
+        form = MemberRegisterForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("created successfuly")
+        else:
+            print(form.errors)
+    form = MemberRegisterForm()
 
+    context = {'form':form}
 
-
+    return render(request,'member_register.html',context)
 
 
 
