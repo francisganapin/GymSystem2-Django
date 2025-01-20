@@ -7,27 +7,31 @@
 
 
 <div class="main-content p-8 bg-pink-50">
-    <div class="overflow-auto max-h-96 border border-gray-400 rounded-md shadow-md">
+    <div class="overflow-auto max-h-96 border border-gray-400 rounded-md shadow-lg">
         <table class="table-auto border-collapse w-full text-left">
-            <thead class="bg-pink-100 sticky top-0">
-            <tr>
-                <th class="border border-gray-400  text-pink-800 font-medium text-left">ID CARD</th>
-                <th class="border border-gray-400 text-pink-800 font-medium text-left">Expiry</th>
-                <th class="border border-gray-400 text-pink-800 font-medium text-left">Name</th>
-                <th class="border border-gray-400 text-pink-800 font-medium text-left">Phone</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for member in members %}
-            <tr class="hover:bg-gray-100">
-                <td class="border border-gray-400 px-4 py-2 text-pink-800 font-medium text-left">{{ member.id_card }}</td>
-                <td class="border border-gray-400 px-4 py-2 text-pink-800 font-medium text-left">{{ member.expiry }}</td>
-                <td class="border border-gray-400 px-4 py-2 text-pink-800 font-medium text-left">{{ member.first_name }} {{ member.last_name }}</td>
-                <td class="border border-gray-400 px-4 py-2 text-pink-800 font-medium text-left">{{ member.phone_number }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            <thead class="bg-gradient-to-r from-pink-200 to-pink-100 sticky top-0 shadow-sm">
+                <tr>
+                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">ID CARD</th>
+                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Expiry</th>
+                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Name</th>
+                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Phone</th>
+                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Profile Image</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                {% for member in members %}
+                <tr class="hover:bg-pink-50 transition-colors duration-200">
+                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.id_card }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.expiry }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.first_name }} {{ member.last_name }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.phone_number }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">
+                        <img src="{{ member.profile_image }}" alt="Profile" class="h-12 w-12 rounded-full mx-auto border border-pink-200">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 

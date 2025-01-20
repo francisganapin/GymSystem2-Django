@@ -8,7 +8,7 @@ class GymMember(models.Model):
     gender = models.CharField(max_length=10)
     phone_number = models.CharField(max_length=15)
     address = models.TextField()
-    profile_image = models.ImageField(upload_to='profile_image/', null=True, blank=True)
+    profile_image = models.ImageField(upload_to='images/', null=True, blank=True)
 
     class Meta:
         db_table = 'gym_members'  # Custom table name
@@ -21,7 +21,7 @@ class GymSale(models.Model):
     sale_date = models.DateField()           
     payment_method = models.CharField(max_length=100)  
     sale_price = models.IntegerField()
-    expiry = models.DateField()
+    item = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'sale_table'  # Custom table name

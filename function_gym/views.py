@@ -59,8 +59,6 @@ def dash_board_views(request):
     return render(request,'dashboard.html',context) 
 
 
-
-
 def member_views(request):
     members = GymMember.objects.all()
 
@@ -93,10 +91,6 @@ def member_login(request):
     return render(request,'member_login.html',context)
 
 
-
-
-
-
 def member_register(request):
     if request.method == 'POST':
         form = MemberRegisterForm(request.POST,request.FILES)
@@ -112,13 +106,11 @@ def member_register(request):
     return render(request,'member_register.html',context)
 
 
+def gym_sale_views(request):
+    sale = GymSale.objects.all()
+    context = {'sale':sale}
 
-
-
-
-
-
-
+    return render(request,'sale_gym.html',context)
 
 
 

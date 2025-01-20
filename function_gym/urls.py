@@ -10,7 +10,8 @@ urlpatterns =[
     path('',views.dash_board_views,name='dash_board_views'),
     path('member-list',views.member_views,name='member_views'),
     path('member-login',views.member_login,name='member_login'),
-    path('member-register',views.member_register,name='member_register')
+    path('member-register',views.member_register,name='member_register'),
+    path('sale-dashboard',views.gym_sale_views,name='gym_sale_views')
 
  
 ]

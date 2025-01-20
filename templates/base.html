@@ -102,9 +102,9 @@
         <ul>
             <li><a href="{% url 'dash_board_views' %}">Dashboard</a></li>
             <li><a href="{% url 'member_views' %}">Member Record</a></li>
-            <li><a href="#">Login Member</a></li>
-            <li><a href="#">Trainer Record</a></li>
-            <li><a href="#">Sales Record</a></li>
+            <li><a href="{% url 'member_register'%}">register Member</a></li>
+            <li><a href="{% url 'member_login'%}">Login Member</a></li>
+            <li><a href="{%url 'gym_sale_views' %}">Sales Record</a></li>
             <li><a href="#">Gym Equipment Info</a></li>
             <li><a href="#">Classes Record</a></li>
             <li><a href="#">Inventory Record</a></li>
