@@ -1,11 +1,21 @@
 from django.db import models
 
 class GymMember(models.Model):
+
+
+
+    GENDER_CHOICES =  [
+        ('Male','Male'),
+
+        ('Female','Female')
+        ]
+
+
     id_card = models.CharField(max_length=50, unique=True)
     expiry = models.DateField()
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    gender = models.CharField(max_length=10)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     phone_number = models.CharField(max_length=15)
     address = models.TextField()
     profile_image = models.ImageField(upload_to='images/', null=True, blank=True)
@@ -13,7 +23,9 @@ class GymMember(models.Model):
     class Meta:
         db_table = 'gym_members'  # Custom table name
 
-
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.id_card})"
+    
 class GymSale(models.Model):
     
      
@@ -25,3 +37,18 @@ class GymSale(models.Model):
 
     class Meta:
         db_table = 'sale_table'  # Custom table name
+
+
+
+class LoginRecord(models.Model):
+    id_card = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    login_time = models.CharField(max_length=100)
+
+
+    def __str__(self):
+        return f'{self.id_card}-{self.first_name} {self.last_name} - {self.login_time}'
+
+    class Meta:
+        db_table = 'gym_login_record'

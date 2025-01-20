@@ -2,10 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db import connection
 from datetime import date
-from .models import GymMember,GymSale
+from .models import GymMember,GymSale,LoginRecord
 # Create your views here.
 from .forms import MemberLoginForm,MemberRegisterForm
 
+# for now()
+import datetime
+
+# for timezone()
+import pytz
 
 def dash_board_views(request):
     """ count gender number"""
@@ -69,26 +74,45 @@ def member_views(request):
 
 
 def member_login(request):
-    member_data = None
-    error_message = None
-
     if request.method == 'POST':
-        form = MemberLoginForm(request.POST)
-        if form.is_valid():
-            id_card = form.cleaned_data['id_card']
-            try:
-                member_data = GymMember.objects.get(id_card=id_card)
-                print(f"Member data: {member_data}")
-            except GymMember.DoesNotExist:
-                error_message = 'He was not member or he was not exist'
-    else:
-        form = MemberLoginForm()
+        id_card = request.POST.get('id_card')
 
-    context = {'form':form,
-             'member_data':member_data,
-             'error_message':error_message}
 
-    return render(request,'member_login.html',context)
+
+# using now() to get current time
+        current_time = datetime.datetime.now(pytz.timezone('Asia/Manila'))
+
+        try:
+            # Fetch the member with the provided ID card
+            member = GymMember.objects.get(id_card=id_card)
+
+
+
+            LoginRecord.objects.create(
+                id_card=member.id_card,
+                first_name=member.first_name,
+                last_name=member.last_name,
+                login_time = current_time
+            )
+
+            # Render a success template or return details
+            return render(request, 'member_login.html', {
+                'member': member
+            })
+        except GymMember.DoesNotExist:
+            # If the ID card is not found, return an error
+            return render(request, 'member_login.html', {
+                'error': 'Invalid ID Card. Please try again.'
+            })
+    return render(request, 'member_login.html')
+
+
+def login_record_views(request):
+
+    login_record = LoginRecord.objects.all()
+    context = {'login_record':login_record}
+
+    return render(request,'login_record.html',context)
 
 
 def member_register(request):
@@ -104,6 +128,12 @@ def member_register(request):
     context = {'form':form}
 
     return render(request,'member_register.html',context)
+
+
+
+
+
+
 
 
 def gym_sale_views(request):

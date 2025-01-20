@@ -6,6 +6,20 @@
     <title>Gym Love Creatine System</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+
+
+        *{
+            box-sizing:border-box;
+        }
+
+        body,html{
+            margin:0;
+            padding:0;
+            overflow-x:hidden;
+            font-family:Arial, Helvetica, sans-serif;
+
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -94,6 +108,37 @@
             max-width: 100%;
             border-radius: 8px;
         }
+
+
+
+        .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #044d66;
+    height: 20vh; /* Full viewport height */
+    color: white;
+    border-bottom: 4px solid #067a9c;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-right: -220px;
+}
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }z
+
+        .header p {
+            font-size: 1.2rem;
+            margin: 0;
+            font-style: italic;
+            color: #cce7f2;
+        }
+
+
     </style>
 </head>
 <body>
@@ -105,6 +150,7 @@
             <li><a href="{% url 'member_register'%}">register Member</a></li>
             <li><a href="{% url 'member_login'%}">Login Member</a></li>
             <li><a href="{%url 'gym_sale_views' %}">Sales Record</a></li>
+            <li><a href="{%url 'login_record_views' %}">Login Record</a></li>
             <li><a href="#">Gym Equipment Info</a></li>
             <li><a href="#">Classes Record</a></li>
             <li><a href="#">Inventory Record</a></li>

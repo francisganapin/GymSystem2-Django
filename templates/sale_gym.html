@@ -4,30 +4,37 @@
 
 {% block content %}
 
+<style>
+    .sale_list {
+        padding-right: 100px; /* Keep this as is */
+        margin-left: -160px; /* Shift left by 20px */
+    }
+</style>
 
-
-<div class="main-content p-8 bg-pink-50">
-    <div class="overflow-auto max-h-96 border border-gray-400 rounded-md shadow-lg">
-        <table class="table-auto border-collapse w-full text-left">
-            <thead class="bg-gradient-to-r from-pink-200 to-pink-100 sticky top-0 shadow-sm">
-                <tr>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Sale Item</th>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Mode Payment</th>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Price</th>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Transaction</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white">
-                {% for sale in sale %}
-                <tr class="hover:bg-pink-50 transition-colors duration-200">
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ sale.sale_date}}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ sale.payment_method }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ sale.sale_price }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ sale.item }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div class="sale_list">
+    <div class="main-content p-8 bg-pink-50">
+        <div class="overflow-auto max-h-96 border border-gray-400 rounded-md shadow-lg">
+            <table class="table-auto border-collapse w-full text-left">
+                <thead class="bg-gradient-to-r from-pink-200 to-pink-100 sticky top-0 shadow-sm">
+                    <tr>
+                        <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Sale Item</th>
+                        <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Mode Payment</th>
+                        <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Price</th>
+                        <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Transaction</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    {% for sale in sale %}
+                    <tr class="hover:bg-pink-50 transition-colors duration-200">
+                        <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ sale.sale_date}}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ sale.payment_method }}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ sale.sale_price }}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ sale.item }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

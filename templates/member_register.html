@@ -1,8 +1,123 @@
+{% extends "base.html" %}
 
-<!-- Login form -->
-<form method="post" enctype="multipart/form-data">
+{% block title %}Classes{% endblock %}
+
+{% block content %}
+
+
+<form method="post" action="{% url 'member_register' %}" enctype="multipart/form-data" style="max-width: 500px; margin: 0 auto; background: pink; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
     {% csrf_token %}
-    <label for="id_card">ID Card:</label>
-    {{ form.as_p }}
-    <button type="submit">Login</button>
+    
+    <!-- ID Card -->
+    <div style="margin-bottom: 15px;">
+        <label for="id_card" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">ID Card:</label>
+        <input 
+            type="text" 
+            id="id_card" 
+            name="id_card" 
+            value="{{ form.id_card.value|default:'' }}" 
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
+            required
+        >
+    </div>
+
+    <!-- Expiry -->
+    <div style="margin-bottom: 15px;">
+        <label for="expiry" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Expiration Date:</label>
+        <input 
+            type="date" 
+            id="expiry" 
+            name="expiry" 
+            value="{{ form.expiry.value|default:'' }}" 
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
+            required
+        >
+    </div>
+
+    <!-- First Name -->
+    <div style="margin-bottom: 15px;">
+        <label for="first_name" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">First Name:</label>
+        <input 
+            type="text" 
+            id="first_name" 
+            name="first_name" 
+            value="{{ form.first_name.value|default:'' }}" 
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
+            required
+        >
+    </div>
+
+    <!-- Last Name -->
+    <div style="margin-bottom: 15px;">
+        <label for="last_name" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Last Name:</label>
+        <input 
+            type="text" 
+            id="last_name" 
+            name="last_name" 
+            value="{{ form.last_name.value|default:'' }}" 
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
+            required
+        >
+    </div>
+
+    <!-- Gender -->
+    <div style="margin-bottom: 15px;">
+        <label for="gender" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Gender:</label>
+        <select 
+            id="gender" 
+            name="gender" 
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
+        >
+            <option value="" disabled selected>Select Gender</option>
+            <option value="Male" {% if form.gender.value == "Male" %}selected{% endif %}>Male</option>
+            <option value="Female" {% if form.gender.value == "Female" %}selected{% endif %}>Female</option>
+        </select>
+    </div>
+
+    <!-- Phone Number -->
+    <div style="margin-bottom: 15px;">
+        <label for="phone_number" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Phone Number:</label>
+        <input 
+            type="tel" 
+            id="phone_number" 
+            name="phone_number" 
+            value="{{ form.phone_number.value|default:'' }}" 
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
+            required
+        >
+    </div>
+
+    <!-- Address -->
+    <div style="margin-bottom: 15px;">
+        <label for="address" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Address:</label>
+        <textarea 
+            id="address" 
+            name="address" 
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
+            required
+        >{{ form.address.value|default:'' }}</textarea>
+    </div>
+
+    <!-- Profile Image -->
+    <div style="margin-bottom: 15px;">
+        <label for="profile_image" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Profile Image:</label>
+        <input 
+            type="file" 
+            id="profile_image" 
+            name="profile_image" 
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
+            accept="image/*"
+        >
+    </div>
+
+    <!-- Submit Button -->
+    <div>
+        <input 
+            type="submit" 
+            value="Submit" 
+            style="width: 100%; padding: 10px; background: #3b82f6; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-align: center;"
+        >
+    </div>
 </form>
+
+{% endblock %}

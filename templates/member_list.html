@@ -4,10 +4,17 @@
 
 {% block content %}
 
+<style>
 
+    .member-list{
+        padding-right:100px;
+        margin-left: -160px; /* Shift left by 20px */
+    }
 
+</style>
+<div class="member-list">
 <div class="main-content p-8 bg-pink-50">
-    <div class="overflow-auto max-h-96 border border-gray-400 rounded-md shadow-lg">
+    <div class="overflow-auto max-h-400 border border-gray-400 rounded-md shadow-lg">
         <table class="table-auto border-collapse w-full text-left">
             <thead class="bg-gradient-to-r from-pink-200 to-pink-100 sticky top-0 shadow-sm">
                 <tr>
@@ -33,6 +40,7 @@
             </tbody>
         </table>
     </div>
+</div>
 </div>
 
 {% endblock %}

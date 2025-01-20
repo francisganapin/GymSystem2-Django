@@ -1,32 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Member Login</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Classes{% endblock %}
+
+{% block content %}
+
+<style>
+    .information_detail {
+        display: flex; 
+        flex-direction: column;
+        align-items: center; 
+        justify-content: center; 
+        text-align: center; 
+        min-height: 200px; 
+        margin: 0 auto; 
+    }
+</style>
+
+
+
+<div class="information_detail"> <!-- this will show the member details after login-->
     <h1>Member Login</h1>
-
-    <!-- Display error message if any -->
-    {% if error_message %}
-        <div style="color: red;">
-            {{ error_message }}
-        </div>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
     {% endif %}
 
-    <!-- Display member information if found -->
-    {% if member_data %}
-        <h2>Welcome, {{ member_data.first_name }} {{ member_data.last_name }}</h2>
-        <p>Membership Expiry Date: {{ member_data.expiry }}</p>
-    {% endif %}
 
-    <!-- Login form -->
-    <form method="post">
-        {% csrf_token %}
-        <label for="id_card">ID Card:</label>
-        {{ form.id_card }}
-        <button type="submit">Login</button>
-    </form>
+    <h1>Welcome, {{ member.first_name }} {{ member.last_name }}</h1>
+    <p><strong>ID Card:</strong> {{ member.id_card }}</p>
+    <p><strong>Expiry Date:</strong> {{ member.expiry }}</p>
+ 
+
+</div>
+
+<form method="post" action="{% url 'member_login' %}" enctype="multipart/form-data" style="max-width: 500px; margin: 0 auto; background: pink; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    {% csrf_token %}
+    
+    <!-- ID Card -->
+    <div style="margin-bottom: 15px;">
+        <label for="id_card" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">ID Card:</label>
+        <input 
+            type="text" 
+            id="id_card" 
+            name="id_card" 
+            value="{{ form.id_card.value|default:'' }}" 
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
+            required
+        >
+    </div>
+
+    <!-- Submit Button -->
+    <div>
+        <input 
+            type="submit" 
+            value="Submit" 
+            style="width: 100%; padding: 10px; background: #3b82f6; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-align: center;"
+        >
+    </div>
+
+</form>
+
+{% endblock %}
+
 </body>
 </html>
