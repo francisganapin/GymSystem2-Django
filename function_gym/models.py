@@ -22,6 +22,7 @@ class GymMember(models.Model):
 
     class Meta:
         db_table = 'gym_members'  # Custom table name
+      
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.id_card})"
@@ -45,6 +46,7 @@ class LoginRecord(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     login_time = models.CharField(max_length=100)
+    login_date = models.CharField(max_length=100)
 
 
     def __str__(self):
@@ -52,3 +54,13 @@ class LoginRecord(models.Model):
 
     class Meta:
         db_table = 'gym_login_record'
+        unique_together = ('id_card', 'login_date')
+
+
+class GymEquipment(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    profile_picture =models.ImageField(upload_to='equipment-picture/', null=True, blank=True)
+
+    class Meta:
+        db_table = 'equipment'

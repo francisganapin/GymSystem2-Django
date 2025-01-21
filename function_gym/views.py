@@ -29,6 +29,7 @@ def dash_board_views(request):
         cursor.execute('SELECT SUM(sale_price) FROM sale_table')
         results3 = cursor.fetchone()  # Add parentheses to fetchall()
 
+    
 
     total_sales = results3[0] if results3 and results3[0] is not None else 0
 
@@ -80,19 +81,29 @@ def member_login(request):
 
 
 # using now() to get current time
-        current_time = datetime.datetime.now(pytz.timezone('Asia/Manila'))
+        current_time_ph = datetime.datetime.now(pytz.timezone('Asia/Manila'))
+        
+        current_date_formated = current_time_ph.strftime('%Y-%m-%d')
+        current_time_formated = current_time_ph.strftime('%H:%M:%S')
 
         try:
-            # Fetch the member with the provided ID card
+            #fetch the member provided by our id
             member = GymMember.objects.get(id_card=id_card)
 
+            if LoginRecord.objects.filter(id_card=member.id_card,login_date=current_date_formated).exists():
+
+                return render(request,'member_login.html',{
+                    'error':'ID card was already login',
+                    'member':member
+                })
 
 
             LoginRecord.objects.create(
                 id_card=member.id_card,
                 first_name=member.first_name,
                 last_name=member.last_name,
-                login_time = current_time
+                login_time = current_time_formated,
+                login_date = current_date_formated
             )
 
             # Render a success template or return details
@@ -123,7 +134,8 @@ def member_register(request):
             return HttpResponse("created successfuly")
         else:
             print(form.errors)
-    form = MemberRegisterForm()
+    else:
+        form = MemberRegisterForm()
 
     context = {'form':form}
 

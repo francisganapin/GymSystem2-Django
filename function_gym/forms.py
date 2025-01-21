@@ -17,6 +17,7 @@ class MemberLoginForm(forms.ModelForm):
         id_card = self.cleaned_data.get('id_card', '').strip()
         return id_card
 
+ 
         
 
 class MemberRegisterForm(forms.ModelForm):
@@ -28,9 +29,24 @@ class MemberRegisterForm(forms.ModelForm):
                 'expiry':forms.DateInput(attrs={'type':'date'}),
             }
 
-    def clean_expiry(self):
-        expiry = self.cleaned_data.get('expiry')
-        if not expiry:
-                raise forms.ValidationError('expiration date is required boss')
-        return expiry
+
+    def clean_id_card(self):
+        id_card = self.cleaned_data.get('id_card')
+        
+
+        if len(id_card) != 10:
+            raise forms.ValidationError('The id card must 10 character')
+             
+        if GymMember.objects.filter(id_card=id_card).exists():
+            raise forms.ValidationError('This Card is already Exist')
+
+
+        return id_card
     
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+
+        if GymMember.objects.filter(phone_number=phone_number).exists():
+             raise forms.ValidationError('this Phone is already Exist')
+
+        return phone_number

@@ -5,13 +5,18 @@
 {% block content %}
 
 <style>
-
-    .member-list{
-        padding-right:100px;
-        margin-left: -160px; /* Shift left by 20px */
+    .member-list {
+        padding-right: 100px;
+        margin-left: -160px; /* Shift left by 160px */
     }
 
+    .overflow-auto {
+        max-height: 600px; /* Limit height for scrolling */
+        overflow-y: auto; /* Enable vertical scrolling */
+        overflow-x: hidden; /* Disable horizontal scrolling if not needed */
+    }
 </style>
+
 <div class="member-list">
 <div class="main-content p-8 bg-pink-50">
     <div class="overflow-auto max-h-400 border border-gray-400 rounded-md shadow-lg">

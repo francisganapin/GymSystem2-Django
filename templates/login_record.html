@@ -5,12 +5,16 @@
 {% block content %}
 
 <style>
-
-    .member-list{
-        padding-right:100px;
-        margin-left: -160px; /* Shift left by 20px */
+    .member-list {
+        padding-right: 100px;
+        margin-left: -160px; /* Shift left by 160px */
     }
 
+    .overflow-auto {
+        max-height: 600px; /* Limit height for scrolling */
+        overflow-y: auto; /* Enable vertical scrolling */
+        overflow-x: hidden; /* Disable horizontal scrolling if not needed */
+    }
 </style>
 <div class="member-list">
 <div class="main-content p-8 bg-pink-50">
@@ -22,6 +26,8 @@
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">First Name</th>
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Last Name</th>
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Login Time</th>
+                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Login Date</th>
+
                 </tr>
             </thead>
             <tbody class="bg-white">
@@ -31,6 +37,7 @@
                     <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ login_record.first_name }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ login_record.last_name }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ login_record.login_time }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ login_record.login_date }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

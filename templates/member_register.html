@@ -5,6 +5,10 @@
 {% block content %}
 
 
+
+
+
+
 <form method="post" action="{% url 'member_register' %}" enctype="multipart/form-data" style="max-width: 500px; margin: 0 auto; background: pink; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
     {% csrf_token %}
     
@@ -19,7 +23,18 @@
             style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
             required
         >
+
+    {% if form.id_card.errors %}
+        <ul>
+            {% for error in form.id_card.errors %}
+                    <li style="color:red">{{error}}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
     </div>
+
+
 
     <!-- Expiry -->
     <div style="margin-bottom: 15px;">
@@ -85,6 +100,16 @@
             style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
             required
         >
+
+    {% if form.phone_number.errors %}
+        <ul>
+            {% for error in form.phone_number.errors %}
+                    <li style="color:red">{{error}}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+
     </div>
 
     <!-- Address -->

@@ -18,7 +18,8 @@ CREATE TABLE gym_login_record (
     id_card VARCHAR(255),
     first_name VARCHAR(255),
     last_name VARCHAR(255),
-    login_time VARCHAR(255)
+    login_time VARCHAR(255),
+    login_date VARCHAR(255)
    
 );
 """)
