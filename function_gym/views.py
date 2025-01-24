@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404,redirect,reverse
 from django.http import HttpResponse
 from django.db import connection
 from datetime import date
 from .models import GymMember,GymSale,LoginRecord
 # Create your views here.
-from .forms import MemberLoginForm,MemberRegisterForm
+from .forms import MemberRegisterForm , GymMembersUpdateForms
 
 # for now()
 import datetime
@@ -16,7 +16,7 @@ def dash_board_views(request):
     """ count gender number"""
 
    
-
+    # this will count the gender of our members  
     with connection.cursor() as cursor:
         cursor.execute('SELECT gender,COUNT(*)AS count FROM gym_members GROUP BY gender')
         results = cursor.fetchall()
@@ -68,10 +68,29 @@ def dash_board_views(request):
 def member_views(request):
     members = GymMember.objects.all()
 
-    context = {'members':members}
+    today_date = date.today()
+    context = {'members':members,
+                'today_date':today_date}
+
 
     return render(request,'member_list.html',context)
 
+
+
+def member_update_views(request, member_id):
+    member = get_object_or_404(GymMember, id=member_id)
+    
+    if request.method == 'POST':
+        form = GymMembersUpdateForms(request.POST, request.FILES, instance=member)
+        if form.is_valid():
+            form.save()
+            # Use reverse() to get the URL for member_views
+            return redirect(('member_views'))  # Ensure 'member_views' is named correctly in urls.py
+    else:
+        form = GymMembersUpdateForms(instance=member)
+    
+    return render(request, 'update_member.html', {'form': form, 'member': member})
+    
 
 
 def member_login(request):
@@ -80,7 +99,7 @@ def member_login(request):
 
 
 
-# using now() to get current time
+        # using now() to get current time
         current_time_ph = datetime.datetime.now(pytz.timezone('Asia/Manila'))
         
         current_date_formated = current_time_ph.strftime('%Y-%m-%d')
@@ -93,7 +112,7 @@ def member_login(request):
             if LoginRecord.objects.filter(id_card=member.id_card,login_date=current_date_formated).exists():
 
                 return render(request,'member_login.html',{
-                    'error':'ID card was already login',
+                    'error':f'ID card was already login this day {current_date_formated}',
                     'member':member
                 })
 

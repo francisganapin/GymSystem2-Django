@@ -1,2 +1,20 @@
-1-18-2024
+1-24-2025 
+	
+	-have update option you can add picture or update the expiry date
+	-fix issue for image
+
+1-23-2025
+	
+	- updated the logic of login date so you can identify fast if they expired or not
+
+
+1-22-2025
+	updated say if he was expired show it
+
+
+1-21-2025
+	updated the login record avoid duplicate record in same day
+
+
+1-18-2025	
 	update the databases now 

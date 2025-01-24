@@ -28,18 +28,35 @@
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Name</th>
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Phone</th>
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Profile Image</th>
+                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Update</th>
                 </tr>
             </thead>
             <tbody class="bg-white">
                 {% for member in members %}
                 <tr class="hover:bg-pink-50 transition-colors duration-200">
                     <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.id_card }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.expiry }}</td>
+                    
+                    <!--- expiry logic -->
+                    <td class="border border-gray-300 px-4 py-2 text-gray-700">
+                    {% if member.expiry  < today_date%}
+                    <span style="color:red"><strong>Expired</strong></span>
+                    {% else %}
+                    <span style="color:green"><strong>{{ member.expiry }}</strong></span>
+                    {% endif %}
+
+                    </td>
                     <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.first_name }} {{ member.last_name }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.phone_number }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-center">
-                        <img src="{{ member.profile_image }}" alt="Profile" class="h-12 w-12 rounded-full mx-auto border border-pink-200">
+                        <img src="media/{{ member.profile_image }}" alt="Profile" class="h-12 w-12 rounded-full mx-auto border border-pink-200">
                     </td>
+
+                    <td class="border border-gray-300 px-4 py-2 text-gray-700">
+                        <a href="{% url 'member_update_views' member.id %}" class="text-blue-600 hover:text-blue-800">
+                            <img src="media/icon/edit.svg" alt="Edit" class="inline-block h-5 w-5">
+                        </a>
+                    </td>
+
                 </tr>
                 {% endfor %}
             </tbody>

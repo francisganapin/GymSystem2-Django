@@ -50,3 +50,15 @@ class MemberRegisterForm(forms.ModelForm):
              raise forms.ValidationError('this Phone is already Exist')
 
         return phone_number
+    
+
+
+class GymMembersUpdateForms(forms.ModelForm):
+    class Meta:
+        model = GymMember
+        fields = ['profile_image','expiry']
+
+        widgets ={
+            'expiry':forms.DateInput(attrs={'type':'date','class':'form-contro'}),
+            'profile_image':forms.FileInput(attrs={'class':'form-control-file'}),
+        }

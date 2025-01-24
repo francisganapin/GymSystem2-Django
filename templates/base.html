@@ -145,23 +145,18 @@
     <div class="sidebar">
         <h2>Admin Menu</h2>
         <ul>
-            <li><a href="{% url 'dash_board_views' %}">Dashboard</a></li>
-            <li><a href="{% url 'member_views' %}">Member Record</a></li>
-            <li><a href="{% url 'member_register'%}">register Member</a></li>
-            <li><a href="{% url 'member_login'%}">Login Member</a></li>
-            <li><a href="{%url 'gym_sale_views' %}">Sales Record</a></li>
-            <li><a href="{%url 'login_record_views' %}">Login Record</a></li>
-            <li><a href="#">Gym Equipment Info</a></li>
-            <li><a href="#">Classes Record</a></li>
-            <li><a href="#">Inventory Record</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="{% url 'dash_board_views' %}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="{% url 'member_views' %}"><i class="fas fa-user"></i> Member Record</a></li>
+            <li><a href="{% url 'member_register' %}"><i class="fas fa-user-plus"></i> Register Member</a></li>
+            <li><a href="{% url 'member_login' %}"><i class="fas fa-sign-in-alt"></i> Login Member</a></li>
+            <li><a href="{% url 'gym_sale_views' %}"><i class="fas fa-dollar-sign"></i> Sales Record</a></li>
+            <li><a href="{% url 'login_record_views' %}"><i class="fas fa-clock"></i> Login Record</a></li>
+            <li><a href="#"><i class="fas fa-dumbbell"></i> Gym Equipment Info</a></li>
+            <li><a href="#"><i class="fas fa-calendar-alt"></i> Classes Record</a></li>
+            <li><a href="#"><i class="fas fa-boxes"></i> Inventory Record</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
-        <picture>
-            <source srcset="no_faces.jpg" type="image/webp">
-            <source srcset="no_faces.jpg" type="image/jpeg">
-            <img src="no_faces.jpg" alt="Faceless Man">
-        </picture>
     </div>
 
     <div class="header">

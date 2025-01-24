@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}Classes{% endblock %}
@@ -14,10 +15,6 @@
         min-height: 200px; 
         margin: 0 auto; 
     }
-
-
-
-    
 </style>
 
 
@@ -42,7 +39,6 @@
 
     {% if member %}
         <div class="information_detail">
-            <img src="media/{{ member.profile_image }}">
             <h1>Welcome, {{ member.first_name }} {{ member.last_name }}</h1>
             <p><strong>ID Card:</strong> {{ member.id_card }}</p>
             <p><strong>Expiry Date:</strong> {{ member.expiry }}</p>
@@ -52,19 +48,32 @@
 
 </div>
 
-<form method="post" action="{% url 'member_login' %}" enctype="multipart/form-data" style="max-width: 500px; margin: 0 auto; background: pink; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+<form method="post"  enctype="multipart/form-data" style="max-width: 500px; margin: 0 auto; background: pink; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
     {% csrf_token %}
     
     <!-- ID Card -->
+    <!-- Expiry -->
     <div style="margin-bottom: 15px;">
-        <label for="id_card" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">ID Card:</label>
+        <label for="expiry" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Expiration Date:</label>
         <input 
-            type="text" 
-            id="id_card" 
-            name="id_card" 
-            value="{{ form.id_card.value|default:'' }}" 
+            type="date" 
+            id="expiry" 
+            name="expiry" 
+            value="{{ form.expiry.value|default:'' }}" 
             style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-            required
+        >
+    </div>
+
+
+     <!-- Profile Image -->
+     <div style="margin-bottom: 15px;">
+        <label for="profile_image" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Profile Image:</label>
+        <input 
+            type="file" 
+            id="profile_image" 
+            name="profile_image" 
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
+            accept="media/image/*"
         >
     </div>
 
