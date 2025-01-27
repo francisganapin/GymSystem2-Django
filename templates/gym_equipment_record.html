@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Classes{% endblock %}
+
+{% block content %}
+
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .card {
+        background-color: #FFF3E0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+    .dog-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+    .card button {
+        background-color: #F67280;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s, font-size 0.3s;
+    }
+    .card button:hover {
+        background-color: #C06C84;
+    }
+    .pagination {
+        margin: 20px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    .pagination a {
+        display: inline-block;
+        padding: 10px 15px;
+        color: #fff;
+        background-color: #6d2e46;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    .pagination a:hover {
+        background-color: #C06C84;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .pagination .current {
+        padding: 10px 15px;
+        background-color: #C06C84;
+        color: #fff;
+        border-radius: 25px;
+        font-weight: bold;
+    }
+    .pagination .disabled {
+        display: inline-block;
+        padding: 10px 15px;
+        color: #aaa;
+        background-color: #f0f0f0;
+        border-radius: 25px;
+        cursor: not-allowed;
+    }
+    @media only screen and (max-width: 480px) {
+        .container {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .pagination a, .pagination .current {
+            font-size: 14px;
+            padding: 8px 12px;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <!-- Cards for equipment -->
+    {% for item in page_obj %}
+    <div class="card">
+        <!-- Equipment Image -->
+        <img class="dog-image" src="{{ item.picture.url }}" alt="Equipment image">
+        <!-- Equipment Name Button -->
+        <button class="favorite styled" type="button">{{ item.name }}</button>
+    </div>
+    {% empty %}
+    <p>No equipment found.</p>
+    {% endfor %}
+</div>
+
+<!-- Pagination Links -->
+<div class="pagination">
+    <!-- Previous Link -->
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% else %}
+    <span class="disabled">Previous</span>
+    {% endif %}
+
+    <!-- Current Page Indicator -->
+    <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    <!-- Next Link -->
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+    {% else %}
+    <span class="disabled">Next</span>
+    {% endif %}
+</div>
+</body>
+
+
+
+
+<script>
+    document.querySelectorAll('.card button').forEach(button => {
+        const maxLength = 15; // Set your max character length here
+        if (button.textContent.length > maxLength) {
+            button.style.fontSize = '0.8rem'; // Reduce font size for longer text
+        }
+    });
+</script>
+
+
+{%endblock%}

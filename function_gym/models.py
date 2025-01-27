@@ -18,7 +18,7 @@ class GymMember(models.Model):
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     phone_number = models.CharField(max_length=15)
     address = models.TextField()
-    profile_image = models.ImageField(upload_to='images/', null=True, blank=True)
+    profile_image = models.ImageField(upload_to='images/')
 
     class Meta:
         db_table = 'gym_members'  # Custom table name
@@ -60,7 +60,8 @@ class LoginRecord(models.Model):
 class GymEquipment(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    profile_picture =models.ImageField(upload_to='equipment-picture/', null=True, blank=True)
+    stock = models.IntegerField()
+    picture =models.ImageField(upload_to='equipment-picture/', null=True, blank=True)
 
     class Meta:
-        db_table = 'equipment'
+        db_table = 'gym_equipment_record'

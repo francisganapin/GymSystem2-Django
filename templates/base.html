@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gym Love Creatine System</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
 
 
@@ -136,6 +137,7 @@
             margin: 0;
             font-style: italic;
             color: #cce7f2;
+            max-height:50px;
         }
 
 
@@ -151,7 +153,7 @@
             <li><a href="{% url 'member_login' %}"><i class="fas fa-sign-in-alt"></i> Login Member</a></li>
             <li><a href="{% url 'gym_sale_views' %}"><i class="fas fa-dollar-sign"></i> Sales Record</a></li>
             <li><a href="{% url 'login_record_views' %}"><i class="fas fa-clock"></i> Login Record</a></li>
-            <li><a href="#"><i class="fas fa-dumbbell"></i> Gym Equipment Info</a></li>
+            <li><a href="{% url 'equipment_record_views' %}"><i class="fas fa-dumbbell"></i> Gym Equipment Info</a></li>
             <li><a href="#"><i class="fas fa-calendar-alt"></i> Classes Record</a></li>
             <li><a href="#"><i class="fas fa-boxes"></i> Inventory Record</a></li>
             <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>

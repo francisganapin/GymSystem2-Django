@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404,redirect,reverse
 from django.http import HttpResponse
 from django.db import connection
 from datetime import date
-from .models import GymMember,GymSale,LoginRecord
+from .models import GymMember,GymSale,LoginRecord,GymEquipment
 # Create your views here.
 from .forms import MemberRegisterForm , GymMembersUpdateForms
 
@@ -11,6 +11,9 @@ import datetime
 
 # for timezone()
 import pytz
+
+# paginator for our gym equipment
+from django.core.paginator import Paginator
 
 def dash_board_views(request):
     """ count gender number"""
@@ -161,13 +164,25 @@ def member_register(request):
     return render(request,'member_register.html',context)
 
 
+def equipment_record_views(request):
+    
+    equipment_record = GymEquipment.objects.all()
+    paginator = Paginator(equipment_record,8)
 
+    page_number =request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {'equipment_record':equipment_record,'page_obj':page_obj}
+
+
+    return render(request,'gym_equipment_record.html',context)
 
 
 
 
 
 def gym_sale_views(request):
+    
     sale = GymSale.objects.all()
     context = {'sale':sale}
 
