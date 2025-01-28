@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center py-10">
+    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-lg">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Change Background Color</h1>
+        <div class="form-container">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                <div>
+                    <!-- Display the selected color as a preview box -->
+                    <div 
+                        class="w-full h-16 rounded-lg border border-gray-300 flex items-center justify-center text-white font-bold"
+                        style="background-color: {{ background_color }};"
+                        id="color-preview"
+                    >
+                        {{ background_color|default:"Select a color" }}
+                    </div>
+                </div>
+                <div class="text-gray-700 text-lg">
+                    <!-- Render form with color options -->
+                    <label for="id_color" class="block mb-2 text-gray-600">Choose a color:</label>
+                    <select 
+                        id="id_color" 
+                        name="color" 
+                        class="form-select block w-full mt-1 rounded-lg border-gray-300 shadow-sm focus:ring focus:ring-blue-300"
+                    >
+                        <option value="" data-value="">Select a color</option>
+                        {% for color in form.fields.color.queryset %}
+                            <option value="{{ color.id }}" data-value="{{ color.value }}">
+                                {{ color.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button 
+                    type="submit" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-100"
+                >
+                    Update Color
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript to update the background color preview
+    document.getElementById('id_color').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex]; // Get selected option
+        const colorValue = selectedOption.getAttribute('data-value'); // Get color value
+        const colorName = selectedOption.text; // Get color name
+
+        // Update the color preview box
+        const preview = document.getElementById('color-preview');
+        preview.style.backgroundColor = colorValue || 'transparent';
+        preview.textContent = colorValue ? `${colorName}` : 'No Color Selected';
+
+        // Print selected color in console (or handle it as needed)
+        console.log(`${colorName} (${colorValue})`);
+    });
+</script>
+
+
+
+{% endblock %}
+

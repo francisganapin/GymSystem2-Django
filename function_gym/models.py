@@ -65,3 +65,18 @@ class GymEquipment(models.Model):
 
     class Meta:
         db_table = 'gym_equipment_record'
+
+class SettingColorTable(models.Model):
+  
+    name = models.CharField(max_length=100)
+    value = models.CharField(max_length=100)
+    active = models.BooleanField()  # Whether this color is active
+    
+
+    class Meta: 
+        db_table = 'setting_color_table'
+
+    def __str__(self):
+        # Return "Active" or "Deactive" based on the `active` field
+        return f"{self.name} - {'Active' if self.active else 'Deactive'}"
+        

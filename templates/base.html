@@ -24,7 +24,6 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            background-color: #0a3849;
             color: white;
         }
 
@@ -143,7 +142,7 @@
 
     </style>
 </head>
-<body>
+<body style="background-color: {{ background_color }};">
     <div class="sidebar">
         <h2>Admin Menu</h2>
         <ul>
@@ -156,7 +155,7 @@
             <li><a href="{% url 'equipment_record_views' %}"><i class="fas fa-dumbbell"></i> Gym Equipment Info</a></li>
             <li><a href="#"><i class="fas fa-calendar-alt"></i> Classes Record</a></li>
             <li><a href="#"><i class="fas fa-boxes"></i> Inventory Record</a></li>
-            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="{%url 'background_color_form_views' %}"><i class="fas fa-cog"></i> Settings</a></li>
             <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>

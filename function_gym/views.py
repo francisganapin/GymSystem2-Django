@@ -2,9 +2,9 @@ from django.shortcuts import render, get_object_or_404,redirect,reverse
 from django.http import HttpResponse
 from django.db import connection
 from datetime import date
-from .models import GymMember,GymSale,LoginRecord,GymEquipment
+from .models import GymMember,GymSale,LoginRecord,GymEquipment,SettingColorTable
 # Create your views here.
-from .forms import MemberRegisterForm , GymMembersUpdateFormsExpiry,GymMembersUpdateFormsPicture
+from .forms import SettingColorForm,MemberRegisterForm , GymMembersUpdateFormsExpiry,GymMembersUpdateFormsPicture
 
 # for now()
 import datetime
@@ -69,9 +69,14 @@ def dash_board_views(request):
 
 
 def member_views(request):
+    '''this is for view all member details'''
+
+    #fetch data on models
     members = GymMember.objects.all()
 
+    # we use this line if we want to compare the details in GymMember
     today_date = date.today()
+
     context = {'members':members,
                 'today_date':today_date}
 
@@ -182,6 +187,8 @@ def member_register(request):
 def equipment_record_views(request):
     
     equipment_record = GymEquipment.objects.all()
+
+    # it will only show first 8 in pagination
     paginator = Paginator(equipment_record,8)
 
     page_number =request.GET.get('page')
@@ -205,12 +212,33 @@ def gym_sale_views(request):
 
 
 
+def background_color_form_views(request):
+    # Default background color
+    selected_color = SettingColorTable.objects.filter(active=1).first()
+
+    if request.method == 'POST':
+        form = SettingColorForm(request.POST)
+        if form.is_valid():
+            # Deactivate all current colors
+            SettingColorTable.objects.all().update(active=0)
+
+            # Get the selected color ID from the form
+            selected_color = form.cleaned_data['color']
+
+            # Retrieve the selected color object
 
 
+            # Set the selected color as active and save it
+            selected_color.active = 1
+            selected_color.save()
 
+            # Render the template with the updated color
+            return render(request, 'color_background.html', {'form': form})
+    else:
+        # Pass the initial color to the form
+        form = SettingColorForm(initial={'color':selected_color})
 
-
-
+    return render(request, 'color_background.html', {'form': form})
 
 
 

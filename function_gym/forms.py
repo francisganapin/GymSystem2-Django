@@ -1,5 +1,5 @@
 from django import forms
-from .models import GymMember
+from .models import GymMember,SettingColorTable
 
 class MemberLoginForm(forms.ModelForm):
     id_card = forms.CharField(
@@ -69,3 +69,19 @@ class GymMembersUpdateFormsPicture(forms.ModelForm):
         widgets = {
             'profile_image': forms.FileInput(attrs={'class': 'form-control-file'}),
         }
+
+
+
+class SettingColorForm(forms.ModelForm):
+    # Define the color field with a dropdown populated by SettingColorTable
+    color = forms.ModelChoiceField(
+        queryset=SettingColorTable.objects.all(),
+        widget=forms.Select(attrs={'id': 'id_card', 'class': 'form-select'}),
+        empty_label="Select a color"
+    )
+
+    class Meta:
+        model = SettingColorTable
+        fields = ['color']
+
+    
