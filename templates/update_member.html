@@ -1,94 +1,98 @@
-
 {% extends "base.html" %}
 
-{% block title %}Classes{% endblock %}
+{% block title %}Update Member{% endblock %}
 
 {% block content %}
 
-<style>
-    .information_detail {
-        display: flex; 
-        flex-direction: column;
-        align-items: center; 
-        justify-content: center; 
-        text-align: center; 
-        min-height: 200px; 
-        margin: 0 auto; 
-    }
-</style>
 
 
-
-<div class="information_detail"> <!-- this will show the member details after login-->
-    <h1>Member Login</h1>
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+<div class="min-h-screen flex flex-col items-center justify-center py-10 px-4">
+    <!-- Member Information -->
+    <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-lg text-center mb-6">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-4">Member Login</h1>
+        {% if error %}
+            <p class="text-red-600">{{ error }}</p>
+        {% endif %}
 
         <!-- Error messages -->
         {% if form.errors %}
-        <div class="error-message">
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <p>{{ error }}</p>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        </div>
-    {% endif %}
+            </div>
+        {% endif %}
 
+        {% if member %}
+            <div class="text-center">
+                <img src="{{ member.profile_image.url }}" alt="Profile" class="h-36 w-36 rounded-full mx-auto border border-pink-200">
 
-    {% if member %}
-        <div class="information_detail">
-            <h1>Welcome, {{ member.first_name }} {{ member.last_name }}</h1>
-            <p><strong>ID Card:</strong> {{ member.id_card }}</p>
-            <p><strong>Expiry Date:</strong> {{ member.expiry }}</p>
+                <h2 class="text-xl font-bold text-gray-700 mb-2">Welcome, {{ member.first_name }} {{ member.last_name }}</h2>
+                <strong><p class="text-gray-600"><strong>ID Card:</strong> {{ member.id_card }}</p></strong>
+
+            {% if member.expiry < today_date %}
+                <span style="color:red"><p><strong>Expiry Date:</strong> {{ member.expiry }}</p></span>
+            {% else %}
+                <span style="color:green"><p><strong>Expiry Date:</strong> {{ member.expiry }}</p></span>
+            {% endif %}
+
+            </div>
+        {% endif %}
         
-        </div>
-    {% endif %}
+    </div>
 
+    <!-- Expiry Update Form -->
+    <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-lg mb-6 hover:bg-pink-200 hover:text-white transition duration-300 ease-in">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Update Expiry Date</h2>
+        <form method="post" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="expiry" class="block text-gray-700 font-medium">Expiration Date</label>
+                <input 
+                    type="date" 
+                    id="expiry" 
+                    name="expiry" 
+                    value="{{ form.expiry.value|default:'' }}" 
+                    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+            </div>
+            <button 
+                type="submit" 
+                name="expiry_submit" 
+                class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+            >
+                Update Expiry
+            </button>
+        </form>
+    </div>
+
+    <!-- Picture Update Form -->
+    <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-lg hover:bg-pink-200 hover:text-white transition duration-300 ease-in">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Update Profile Picture</h2>
+        <form method="post" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="profile_image" class="block text-gray-700 font-medium">Profile Image</label>
+                <input 
+                    type="file" 
+                    id="profile_image" 
+                    name="profile_image" 
+                    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    accept="image/*"
+                >
+            </div>
+            <button 
+                type="submit" 
+                name="picture_submit" 
+                class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+            >
+                Update Picture
+            </button>
+        </form>
+    </div>
 </div>
-
-<form method="post"  enctype="multipart/form-data" style="max-width: 500px; margin: 0 auto; background: pink; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-    {% csrf_token %}
-    
-    <!-- ID Card -->
-    <!-- Expiry -->
-    <div style="margin-bottom: 15px;">
-        <label for="expiry" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Expiration Date:</label>
-        <input 
-            type="date" 
-            id="expiry" 
-            name="expiry" 
-            value="{{ form.expiry.value|default:'' }}" 
-            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-        >
-    </div>
-
-
-     <!-- Profile Image -->
-     <div style="margin-bottom: 15px;">
-        <label for="profile_image" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Profile Image:</label>
-        <input 
-            type="file" 
-            id="profile_image" 
-            name="profile_image" 
-            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-            accept="media/image/*"
-        >
-    </div>
-
-    <!-- Submit Button -->
-    <div>
-        <input 
-            type="submit" 
-            value="Submit" 
-            style="width: 100%; padding: 10px; background: #3b82f6; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-align: center;"
-        >
-    </div>
-
-</form>
 
 {% endblock %}
 
-</body>
-</html>

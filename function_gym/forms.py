@@ -53,12 +53,19 @@ class MemberRegisterForm(forms.ModelForm):
     
 
 
-class GymMembersUpdateForms(forms.ModelForm):
+class GymMembersUpdateFormsExpiry(forms.ModelForm):
     class Meta:
         model = GymMember
-        fields = ['profile_image','expiry']
+        fields = ['expiry']
+        widgets = {
+            'expiry': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
 
-        widgets ={
-            'expiry':forms.DateInput(attrs={'type':'date','class':'form-contro'}),
-            'profile_image':forms.FileInput(attrs={'class':'form-control-file'}),
+
+class GymMembersUpdateFormsPicture(forms.ModelForm):
+    class Meta:
+        model = GymMember
+        fields = ['profile_image']
+        widgets = {
+            'profile_image': forms.FileInput(attrs={'class': 'form-control-file'}),
         }

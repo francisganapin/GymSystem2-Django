@@ -4,7 +4,7 @@ from django.db import connection
 from datetime import date
 from .models import GymMember,GymSale,LoginRecord,GymEquipment
 # Create your views here.
-from .forms import MemberRegisterForm , GymMembersUpdateForms
+from .forms import MemberRegisterForm , GymMembersUpdateFormsExpiry,GymMembersUpdateFormsPicture
 
 # for now()
 import datetime
@@ -83,16 +83,31 @@ def member_views(request):
 def member_update_views(request, member_id):
     member = get_object_or_404(GymMember, id=member_id)
     
+    expiry_form = GymMembersUpdateFormsExpiry(instance=member)
+    picture_form = GymMembersUpdateFormsPicture(instance=member)
+
+    today_date = date.today()
+
     if request.method == 'POST':
-        form = GymMembersUpdateForms(request.POST, request.FILES, instance=member)
-        if form.is_valid():
-            form.save()
-            # Use reverse() to get the URL for member_views
-            return redirect(('member_views'))  # Ensure 'member_views' is named correctly in urls.py
-    else:
-        form = GymMembersUpdateForms(instance=member)
-    
-    return render(request, 'update_member.html', {'form': form, 'member': member})
+        if 'expiry_submit' in request.POST:
+            expiry_form =GymMembersUpdateFormsExpiry(request.POST,instance=member)
+            if expiry_form.is_valid():
+                expiry_form.save()
+                return redirect('member_views')
+        elif 'picture_submit' in request.POST:
+            picture_form = GymMembersUpdateFormsPicture(request.POST,request.FILES,instance=member)
+            if picture_form.is_valid():
+                picture_form.save()
+                return redirect('member_views')
+            
+    context = {
+        'expiry_form':expiry_form,
+        'picture_form':picture_form,
+        'member':member,
+        'today_date':today_date
+    }
+
+    return render(request, 'update_member.html', context)
     
 
 
