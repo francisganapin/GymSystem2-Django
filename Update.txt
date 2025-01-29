@@ -1,34 +1,42 @@
 Change Log
 
+January 30,2025
+	Updated successful membership register we could see the registered page successfully
+	we also update the dashboard so we can understand our analythics
+
+January 29,2025
+	Updated the setting of our system so we could changes the background-color next we could changes the 
+	text in the next update
+
 January 28, 2025
-Updated the logic for the expiry date on the update form. Now, users can choose either a new expiry date or upload a profile picture, but not both.
-Added a Gym Equipment section where gym equipment can be viewed.
+	Updated the logic for the expiry in the update form. Now we can  can choose either a new expiry date or upload 	a profile picture, but not both.
+	Added a Gym Equipment section where gym equipment can be viewed.
 
 January 24, 2025
-Added an update option allowing users to either:
-Add a profile picture, or
-Update the expiry date.
-Fixed an issue with displaying profile images.
+	Added an update option allowing users to either:
+	Add a profile picture, or
+	Update the expiry date.
+	Fixed an issue with displaying profile images.
 
 January 23, 2025
-Updated the login date logic to quickly identify if a member's account has expired.
+	Updated the login date logic to quickly identify if a member's account has expired.
 
 January 22, 2025
-Modified the system to show an alert or message if a member's account has expired.
+	Modified the system to show an alert or message if a member's account has expired.
 
 January 21, 2025
-Updated the login record logic to prevent duplicate login records for the same day.
-Fixed the registration logic:
-Added a check to ensure the ID is unique before registering.
-Added a validation check for phone numbers: if a phone number already exists, an error message is shown.
+	Updated the login record logic to prevent duplicate login records for the same day.
+	Fixed the registration logic:
+	Added a check to ensure the ID is unique before registering.
+	Added a validation check for phone numbers: if a phone number already exists, an error message is shown.
 
 January 20, 2025
-Fixed and improved the registration form:
-Resolved CSS design issues.
-Centered the header for a more polished appearance.
+	Fixed and improved the registration form:
+	Resolved CSS design issues.
+	Centered the header for a more polished appearance.
 
 January 19, 2025
-Enhanced the search functionality for dogs using JavaScript.
-Added pagination to improve navigation.
-Styled the pagination feature using CSS.
-Adjusted text size dynamically with JavaScript.
+	Enhanced the search functionality for dogs using JavaScript.
+	 pagination to improve navigation.
+	Styled the pagination feature using CSS.
+	Adjusted text size dynamically with JavaScript.

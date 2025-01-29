@@ -9,7 +9,6 @@ conn = mysql.connector.connect(
 
 cursor = conn.cursor()
 
-cursor.execute("CREATE DATABASE IF NOT EXISTS gym_db_2_django")
 
 cursor.execute("USE gym_db_2_django")
 
@@ -23,22 +22,24 @@ CREATE TABLE gym_members (
     gender VARCHAR(255),
     phone_number VARCHAR(255),
     address TEXT,
-    profile_image VARCHAR(500)
+    profile_image VARCHAR(500),
+    join_date DATE,
+    renewed BOOLEAN
 );
 """)
 
 
 
 member_data =[
-    ('IDLOVE1','2025-07-01','Test','Teresito','Male','0000000000','test address','media/images/noface.png'),
-     ('IDLOVE1','2025-07-01','Test2','Teresita','Female','0000000000','test address','media/images/noface.png')
+    ('IDLOVE1','2025-07-01','Test','Teresito','Male','0000000000','test address','media/images/noface.png','2021-07-01','0'),
+     ('IDLOVE1','2025-07-01','Test2','Teresita','Female','0000000000','test address','media/images/noface.png','2025-07-01','1')
 ]
 
 
 # Execute the batch insert
 cursor.executemany('''
-INSERT INTO gym_members (ID_CARD, Expiry,  First_Name, Last_Name, Gender ,Phone_Number, Address, Profile_Image)
-VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+INSERT INTO gym_members (ID_CARD, Expiry,  First_Name, Last_Name, Gender ,Phone_Number, Address, Profile_Image,join_date,renewed)
+VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s, %s)
 ''', member_data)
 
 # Commit the transaction

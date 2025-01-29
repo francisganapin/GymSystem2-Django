@@ -28,6 +28,7 @@
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Name</th>
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Phone</th>
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Profile Image</th>
+                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Join Date</th>
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Update</th>
                 </tr>
             </thead>
@@ -50,7 +51,7 @@
                     <td class="border border-gray-300 px-4 py-2 text-center">
                         <img src="media/{{ member.profile_image }}" alt="Profile" class="h-12 w-12 rounded-full mx-auto border border-pink-200">
                     </td>
-
+                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.join_date }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-gray-700">
                         <a href="{% url 'member_update_views' member.id %}" class="text-blue-600 hover:text-blue-800">
                             <img src="media/icon/edit.svg" alt="Edit" class="inline-block h-5 w-5">

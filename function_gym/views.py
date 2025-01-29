@@ -9,6 +9,8 @@ from .forms import SettingColorForm,MemberRegisterForm , GymMembersUpdateFormsEx
 # for now()
 import datetime
 
+from datetime import timedelta
+
 # for timezone()
 import pytz
 
@@ -24,9 +26,6 @@ def dash_board_views(request):
         cursor.execute('SELECT gender,COUNT(*)AS count FROM gym_members GROUP BY gender')
         results = cursor.fetchall()
 
-    with connection.cursor() as cursor:
-        cursor.execute('SELECT COUNT(ID_CARD) AS TOTAL FROM gym_members')
-        results2 = cursor.fetchall()
 
     with connection.cursor() as cursor:
         cursor.execute('SELECT SUM(sale_price) FROM sale_table')
@@ -38,30 +37,49 @@ def dash_board_views(request):
 
     today = date.today().strftime("%Y-%m-%d") #display date today
 
-    expired_members = GymMember .objects.filter(expiry__lt=today) # get the list of member expired
-    count_expired = expired_members.count() # count the expired member
+
+
+    total_member_count = GymMember.objects.count()
+    print(f'member count:{total_member_count}')
+
+    total_renewed_count = GymMember.objects.filter(renewed=True).count()
+    print(f'renewed member:{total_renewed_count}')
+
+
+    percentage_renewed = (total_renewed_count / total_member_count) * 100
+  
+  
+
+    expired_members = GymMember.objects.filter(expiry__lt=today).count # get the list of member expired
+    active_members = GymMember.objects.filter(expiry__gte=today).count # get the list of member active now
+  
 
     
-    print(count_expired)
+
 
     #count gender
     gender_count =[{'gender':row[0],'count':row[1]} for row in results]
 
-    #count total_member
-    total_member = [{'total_member': row[0]} for row in results2]  # Results now only contain total count.
 
 
-    print(total_sales)
+
+    #count our new member in past 30 days
+    last_30_days = date.today() - timedelta(days=30)
+    new_member = GymMember.objects.filter(join_date__gte=last_30_days).count
     
     
     
 
     context ={'gender_count':gender_count,
-              'total_member':total_member,
+              'total_member_count':total_member_count,
               'today':today,
               'expired_members':expired_members,
-              'count_expired':count_expired,
-              'total_sales':total_sales
+              'active_members':active_members,
+              'expired_members':expired_members,
+              'total_sales':total_sales,
+              'new_member':new_member,
+              'percentage_renewed':percentage_renewed,
+              'total_renewed_count':total_renewed_count
               }
 
 
@@ -172,8 +190,8 @@ def member_register(request):
     if request.method == 'POST':
         form = MemberRegisterForm(request.POST,request.FILES)
         if form.is_valid():
-            form.save()
-            return HttpResponse("created successfuly")
+            member = form.save()
+            return redirect('member_register_successful_views',member_id=member.id)
         else:
             print(form.errors)
     else:
@@ -183,6 +201,10 @@ def member_register(request):
 
     return render(request,'member_register.html',context)
 
+def member_register_successful_views(request,member_id):
+    member = GymMember.objects.get(id=member_id)
+    context = {'member':member}
+    return render(request,'member_register_successful.html',context)
 
 def equipment_record_views(request):
     
