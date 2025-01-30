@@ -103,7 +103,8 @@
         <!-- Equipment Image -->
         <img class="dog-image" src="{{ item.picture.url }}" alt="Equipment image">
         <!-- Equipment Name Button -->
-        <button class="favorite styled" type="button">{{ item.name }}</button>
+        <button class="favorite styled" type="button" onclick="location.href='{% url 'equipment_record_detail_views' item.id %}'">{{ item.name }}</button>
+
     </div>
     {% empty %}
     <p>No equipment found.</p>

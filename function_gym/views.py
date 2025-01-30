@@ -223,7 +223,12 @@ def equipment_record_views(request):
 
 
 
+def equipment_record_detail_views(request,equipment_id):
+    equipment_record_detail = get_object_or_404(GymEquipment,id=equipment_id)
 
+    context = {'equipment_record_detail':equipment_record_detail}
+
+    return render(request,'gym_equipment_record_detail.html',context)
 
 def gym_sale_views(request):
     
