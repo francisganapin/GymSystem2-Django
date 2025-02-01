@@ -32,7 +32,7 @@ CREATE TABLE gym_members (
 
 member_data =[
     ('IDLOVE1','2025-07-01','Test','Teresito','Male','0000000000','test address','media/images/noface.png','2021-07-01','0'),
-     ('IDLOVE1','2025-07-01','Test2','Teresita','Female','0000000000','test address','media/images/noface.png','2025-07-01','1')
+     ('IDLOVE2','2025-07-01','Test2','Teresita','Female','0000000000','test address','media/images/noface.png','2025-07-01','1')
 ]
 
 

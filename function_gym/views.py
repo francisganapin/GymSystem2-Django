@@ -16,7 +16,11 @@ import pytz
 
 # paginator for our gym equipment
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
+
+@login_required
 def dash_board_views(request):
     """ count gender number"""
 
@@ -85,7 +89,7 @@ def dash_board_views(request):
 
     return render(request,'dashboard.html',context) 
 
-
+@login_required
 def member_views(request):
     '''this is for view all member details'''
 
@@ -102,7 +106,7 @@ def member_views(request):
     return render(request,'member_list.html',context)
 
 
-
+@login_required
 def member_update_views(request, member_id):
     member = get_object_or_404(GymMember, id=member_id)
     
@@ -133,7 +137,7 @@ def member_update_views(request, member_id):
     return render(request, 'update_member.html', context)
     
 
-
+@login_required
 def member_login(request):
     if request.method == 'POST':
         id_card = request.POST.get('id_card')
@@ -177,7 +181,7 @@ def member_login(request):
             })
     return render(request, 'member_login.html')
 
-
+@login_required
 def login_record_views(request):
 
     login_record = LoginRecord.objects.all()
@@ -185,7 +189,7 @@ def login_record_views(request):
 
     return render(request,'login_record.html',context)
 
-
+@login_required
 def member_register(request):
     if request.method == 'POST':
         form = MemberRegisterForm(request.POST,request.FILES)
@@ -200,12 +204,12 @@ def member_register(request):
     context = {'form':form}
 
     return render(request,'member_register.html',context)
-
+@login_required
 def member_register_successful_views(request,member_id):
     member = GymMember.objects.get(id=member_id)
     context = {'member':member}
     return render(request,'member_register_successful.html',context)
-
+@login_required
 def equipment_record_views(request):
     
     equipment_record = GymEquipment.objects.all()
@@ -222,14 +226,14 @@ def equipment_record_views(request):
     return render(request,'gym_equipment_record.html',context)
 
 
-
+@login_required
 def equipment_record_detail_views(request,equipment_id):
     equipment_record_detail = get_object_or_404(GymEquipment,id=equipment_id)
 
     context = {'equipment_record_detail':equipment_record_detail}
 
     return render(request,'gym_equipment_record_detail.html',context)
-
+@login_required
 def gym_sale_views(request):
     
     sale = GymSale.objects.all()
@@ -238,7 +242,7 @@ def gym_sale_views(request):
     return render(request,'sale_gym.html',context)
 
 
-
+@login_required
 def background_color_form_views(request):
     # Default background color
     selected_color = SettingColorTable.objects.filter(active=1).first()
@@ -289,7 +293,115 @@ def background_color_form_views(request):
 
 
 
+from django.contrib.auth import authenticate,login
+from django.shortcuts import render,redirect
 
+def user_login(request):
+    if request.method =='POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request,username=username,password=password)
+
+        if user is not None:
+            login(request,user)
+            return redirect('dash_board_views')
+        else:
+            return(render,'login.html',{'error':'Remember your user name'})
+        
+    return render(request,'login.html')    
+
+
+
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('dash_board_views')
+        else:
+            return render(request, 'login.html', {'error': 'Remember your username'})
+        
+    return render(request, 'login.html')
+
+
+
+
+
+
+
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('dash_board_views')
+        else:
+            return render(request, 'login.html', {'error': 'Remember your username'})
+        
+    return render(request, 'login.html')
+
+
+
+
+
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('dash_board_views')
+        else:
+            return render(request, 'login.html', {'error': 'Remember your username'})
+        
+    return render(request, 'login.html')
+
+
+
+
+
+
+from django.contrib.auth import authenticate,login 
+from django.shortcuts import render,redirect 
+
+def user_login(request): 
+    if request.method =='POST': 
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None: 
+            login(request,user) 
+            return redirect('dash_board_views') 
+        else: 
+            return render(request, 'login.html',{'error':'Remember your user name'}) 
+    
+    return render(request,'login.html')
 
 
 

@@ -1,4 +1,7 @@
 Change Log
+February 2, 2025 
+	we also add login user admin so that no one can access the url if they are not login
+
 February 1,2025
 	We updated the setting of our system so that we can choose what color or font text we use
 
