@@ -80,7 +80,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'function_gym.setting_color_processor.background_color_context'
+                'function_gym.setting_color_processor.background_color_context',
+                'function_gym.setting_font_processor.font_family_context'
             ],
         },
     },

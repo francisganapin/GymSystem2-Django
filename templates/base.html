@@ -22,7 +22,7 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: {{ font_setting }};
             margin: 0;
             color: white;
         }
@@ -159,16 +159,19 @@
     </div>
 
     <div class="header">
+    <div style="font-family: {{ font_setting }};">
         <h1>LoveCreatine Gym System</h1>
         <p>Love Ko Kayo Gym Shop Workout</p>
     </div>
+    </div>
 
+    <div style="font-family: {{ font_setting }};">
     <div class="main-content">
         {% block content %}
         <!-- Main content goes here -->
         {% endblock %}
     </div>
-
+    </div>
 
 
 </body>

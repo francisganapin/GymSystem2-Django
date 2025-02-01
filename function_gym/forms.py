@@ -1,5 +1,5 @@
 from django import forms
-from .models import GymMember,SettingColorTable
+from .models import GymMember,SettingColorTable,SettingFontTable
 
 class MemberLoginForm(forms.ModelForm):
     id_card = forms.CharField(
@@ -85,3 +85,14 @@ class SettingColorForm(forms.ModelForm):
         fields = ['color']
 
     
+class SettingFontForm(forms.ModelForm):
+    # Define the font field with a dropdown populated by SettingFontrTable
+    font = forms.ModelChoiceField(
+        queryset=SettingFontTable.objects.all(),
+        widget=forms.Select(attrs={'id': 'id_card', 'class': 'form-select'}),
+        empty_label="Select a Font"
+    )
+
+    class Meta:
+        model = SettingFontTable
+        fields = ['font']

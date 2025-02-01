@@ -1,49 +1,94 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <div class="min-h-screen flex items-center justify-center py-10">
-    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-lg">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Change Background Color</h1>
-        <div class="form-container">
-            <form method="post" class="space-y-6">
-                {% csrf_token %}
-                <div>
-                    <!-- Display the selected color as a preview box -->
-                    <div 
-                        class="w-full h-16 rounded-lg border border-gray-300 flex items-center justify-center text-white font-bold"
-                        style="background-color: {{ background_color }};"
-                        id="color-preview"
-                    >
-                        {{ background_color|default:"Select a color" }}
+    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-4xl">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Customize Appearance</h1>
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Background Color Form -->
+            <div class="bg-gray-50 shadow-md rounded-xl p-6 flex-1">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Change Background Color</h2>
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    <div>
+                        <div 
+                            class="w-full h-16 rounded-lg border border-gray-300 flex items-center justify-center text-white font-bold"
+                            style="background-color: {{ selected_color.value|default:'white' }};"
+                            id="color-preview"
+                        >
+                            {{ selected_color.value|default:"Select a color" }}
+                        </div>
                     </div>
-                </div>
-                <div class="text-gray-700 text-lg">
-                    <!-- Render form with color options -->
-                    <label for="id_color" class="block mb-2 text-gray-600">Choose a color:</label>
-                    <select 
-                        id="id_color" 
-                        name="color" 
-                        class="form-select block w-full mt-1 rounded-lg border-gray-300 shadow-sm focus:ring focus:ring-blue-300"
+                    <div class="text-gray-700 text-lg">
+                        <label for="id_color" class="block mb-2 text-gray-600">Choose a color:</label>
+                        <select 
+                            id="id_color" 
+                            name="color" 
+                            class="form-select block w-full mt-1 rounded-lg border-gray-300 shadow-sm focus:ring focus:ring-blue-300"
+                        >
+                            <option value="" data-value="">Select a color</option>
+                            {% for color in color_form.fields.color.queryset %}
+                                <option value="{{ color.id }}" data-value="{{ color.value }}" 
+                                    {% if selected_color and selected_color.id == color.id %} selected {% endif %}>
+                                    {{ color.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button 
+                        type="submit" 
+                        name="color_submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-100"
                     >
-                        <option value="" data-value="">Select a color</option>
-                        {% for color in form.fields.color.queryset %}
-                            <option value="{{ color.id }}" data-value="{{ color.value }}">
-                                {{ color.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <button 
-                    type="submit" 
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-100"
-                >
-                    Update Color
-                </button>
-            </form>
+                        Update Color
+                    </button>
+                </form>
+            </div>
+
+            <!-- Font Change Form -->
+            <div class="bg-gray-50 shadow-md rounded-xl p-6 flex-1">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Change Font</h2>
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    <div class="text-gray-700 text-lg">
+                        <label for="id_font" class="block mb-2 text-gray-600">Choose a font:</label>
+                        <select 
+                            id="id_font" 
+                            name="font" 
+                            class="form-select block w-full mt-1 rounded-lg border-gray-300 shadow-sm focus:ring focus:ring-blue-300"
+                            onchange="updateFontPreview(this)"
+                        >
+                            <option value="" data-value="">Select a font</option>
+                            {% for font in font_form.fields.font.queryset %}
+                                <option value="{{ font.id }}" data-value="{{ font.value }}">
+                                    {{ font.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+            
+                    <!-- Font Preview -->
+                    <div 
+                        id="font-preview" 
+                        class="text-center p-4 mt-4 border rounded-lg text-gray-800"
+                        style="font-family: {{ selected_font.value|default:'Arial' }};"
+                    >
+                        Sample Text
+                    </div>
+            
+                    <button 
+                        type="submit" 
+                        name="font_submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-100"
+                    >
+                        Update Font
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
 
 <script>
     // JavaScript to update the background color preview
@@ -60,9 +105,19 @@
         // Print selected color in console (or handle it as needed)
         console.log(`${colorName} (${colorValue})`);
     });
+
+
+
+
 </script>
 
-
+<script>
+function updateFontPreview(selectElement) {
+    var selectedOption = selectElement.options[selectElement.selectedIndex];
+    var fontValue = selectedOption.getAttribute("data-value");
+    document.getElementById("font-preview").style.fontFamily = fontValue;
+}
+</script>
 
 {% endblock %}
 

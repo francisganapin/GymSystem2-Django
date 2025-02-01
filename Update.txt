@@ -1,4 +1,7 @@
 Change Log
+February 1,2025
+	We updated the setting of our system so that we can choose what color or font text we use
+
 
 January 30,2025
 	Updated successful membership register we could see the registered page successfully
