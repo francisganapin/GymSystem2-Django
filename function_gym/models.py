@@ -36,6 +36,7 @@ class GymMember(models.Model):
         else:
             self.renewed = False
         super().save(*args,**kwargs)    
+        
 class GymSale(models.Model):
     
      

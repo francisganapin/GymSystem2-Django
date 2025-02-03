@@ -6,6 +6,11 @@ from .models import GymMember,GymSale,LoginRecord,GymEquipment,SettingColorTable
 # Create your views here.
 from .forms import *
 
+
+from django.contrib.auth import authenticate,login
+from django.shortcuts import render,redirect
+
+
 # for now()
 import datetime
 
@@ -89,13 +94,21 @@ def dash_board_views(request):
 
     return render(request,'dashboard.html',context) 
 
+
+#2/4/2025 updated
 @login_required
 def member_views(request):
+
+
     '''this is for view all member details'''
 
-    #fetch data on models
-    members = GymMember.objects.all()
+    #fetch data on models values that we needed
+    members_list = GymMember.objects.values('id','id_card','expiry','first_name','last_name','phone_number','profile_image','join_date')
 
+
+    paginator = Paginator(members_list,50)
+    page_number = request.GET.get('page')
+    members = paginator.get_page(page_number)
     # we use this line if we want to compare the details in GymMember
     today_date = date.today()
 
@@ -293,8 +306,6 @@ def background_color_form_views(request):
 
 
 
-from django.contrib.auth import authenticate,login
-from django.shortcuts import render,redirect
 
 def user_login(request):
     if request.method =='POST':

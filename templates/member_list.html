@@ -23,6 +23,7 @@
         <table class="table-auto border-collapse w-full text-left">
             <thead class="bg-gradient-to-r from-pink-200 to-pink-100 sticky top-0 shadow-sm">
                 <tr>
+                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">ID</th>
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">ID CARD</th>
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Expiry</th>
                     <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Name</th>
@@ -35,6 +36,7 @@
             <tbody class="bg-white">
                 {% for member in members %}
                 <tr class="hover:bg-pink-50 transition-colors duration-200">
+                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.id }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.id_card }}</td>
                     
                     <!--- expiry logic -->
@@ -62,8 +64,26 @@
                 {% endfor %}
             </tbody>
         </table>
+
     </div>
 </div>
 </div>
+
+
+<!--we add this to have option to paginate data on our member 2/4/2025-->
+<div>
+    {% if members.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ members.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    <span>Page {{ members.number }} of {{ members.paginator.num_pages }}</span>
+
+    {% if members.has_next %}
+        <a href="?page={{ members.next_page_number }}">Next</a>
+        <a href="?page={{ members.paginator.num_pages }}">Last</a>
+    {% endif %}
+</div>
+
 
 {% endblock %}
