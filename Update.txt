@@ -1,4 +1,7 @@
 Change Log
+February 8,2025
+	updated the memberlist html
+	
 February 7, 2025
 	update the folder of our gym system for future app we add
 

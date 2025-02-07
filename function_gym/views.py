@@ -9,15 +9,12 @@ from .forms import *
 from member_function.models import GymMember
 from django.contrib.auth import authenticate,login
 from django.shortcuts import render,redirect
+from django.db.models import Q
 
-
-# for now()
-import datetime
 
 from datetime import timedelta
 
-# for timezone()
-import pytz
+
 
 # paginator for our gym equipment
 from django.core.paginator import Paginator
@@ -100,9 +97,21 @@ def dash_board_views(request):
 
 @login_required
 def login_record_views(request):
+    '''show login record available here'''
+    #we use values instead of all to limit the data we get here
+    login_record = LoginRecord.objects.values('id_card','first_name','last_name','login_time','login_date')
 
-    login_record = LoginRecord.objects.all()
-    context = {'login_record':login_record}
+    #get the queary card
+    queary_card = request.GET.get('id_card') 
+
+    if queary_card:
+        login_record =  login_record.filter(Q(id_card__contains=queary_card))
+
+    paginator = Paginator(login_record,5)
+    page_number = request.GET.get('page')
+    login_record_details = paginator.get_page(page_number)
+
+    context = {'login_record_details':login_record_details}
 
     return render(request,'login_record.html',context)
 
@@ -111,7 +120,7 @@ def login_record_views(request):
 def member_register_successful_views(request,member_id):
     member = GymMember.objects.get(id=member_id)
     context = {'member':member}
-    return render(request,'member_register_successful.html',context)
+    return render(request,'member/member_register_successful.html',context)
 
 @login_required
 def equipment_record_views(request):

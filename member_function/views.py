@@ -47,7 +47,7 @@ def member_views(request):
     if queary_card:
         members_list =members_list.filter(Q(id_card__contains=queary_card))
 
-    paginator = Paginator(members_list,50)
+    paginator = Paginator(members_list,15)
     page_number = request.GET.get('page')
     members = paginator.get_page(page_number)
     # we use this line if we want to compare the details in GymMember
@@ -57,7 +57,7 @@ def member_views(request):
                 'today_date':today_date}
 
 
-    return render(request,'member_list.html',context)
+    return render(request,'member/member_list.html',context)
 
 
 @login_required
@@ -88,7 +88,7 @@ def member_update_views(request, member_id):
         'today_date':today_date
     }
 
-    return render(request, 'update_member.html', context)
+    return render(request, 'member/update_member.html', context)
     
 
 @login_required
@@ -133,7 +133,7 @@ def member_login(request):
             return render(request, 'member_login.html', {
                 'error': 'Invalid ID Card. Please try again.'
             })
-    return render(request, 'member_login.html')
+    return render(request, 'member/member_login.html')
 
 @login_required
 def login_record_views(request):
@@ -157,7 +157,7 @@ def member_register(request):
 
     context = {'form':form}
 
-    return render(request,'member_register.html',context)
+    return render(request,'member/member_register.html',context)
 
 @login_required
 def member_register_successful_views(request,member_id):
