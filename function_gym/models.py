@@ -1,53 +1,32 @@
 from django.db import models
 from datetime import date,timedelta
-
-class GymMember(models.Model):
-
+from django.db.models import F #2/5/2025 for item to address the stock
 
 
-    GENDER_CHOICES =  [
-        ('Male','Male'),
 
-        ('Female','Female')
-        ]
-
-
-    id_card = models.CharField(max_length=50, unique=True)
-    expiry = models.DateField()
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    phone_number = models.CharField(max_length=15)
-    address = models.TextField()
-    join_date = models.DateField(auto_now_add=True) # it will auto add the date now 
-    renewed = models.BooleanField(default=False)
-    profile_image = models.ImageField(upload_to='images/')
-
-    class Meta:
-        db_table = 'gym_members'  # Custom table name
-      
-    def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.id_card})"
-    
-    def save(self,*args,**kwargs):
-        today = date.today()
-        if self.expiry > today + timedelta(days=20):
-           self.renewed = True
-        else:
-            self.renewed = False
-        super().save(*args,**kwargs)    
-        
 class GymSale(models.Model):
-    
-     
-    id_card = models.CharField(max_length=50, unique=True)                
-    sale_date = models.DateField()           
-    payment_method = models.CharField(max_length=100)  
-    sale_price = models.IntegerField()
-    item = models.CharField(max_length=100)
+    sale_date = models.DateField()
+    payment_method = models.CharField(max_length=100)
+    total_sale = models.IntegerField(default=0)  # Default to zero
 
     class Meta:
-        db_table = 'sale_table'  # Custom table name
+        db_table = 'sale_table'
+
+    def save(self, *args, **kwargs):
+        # Ensure the GymSale instance is saved first before calculating total
+        super().save(*args, **kwargs)
+
+        # Now calculate total_sale based on SaleItems linked to this GymSale
+        self.total_sale = sum(item.get_total_price() for item in self.sale_items.all())
+        GymSale.objects.filter(id=self.id).update(total_sale=self.total_sale)
+
+
+
+
+
+
+        
+
 
 
 
@@ -75,6 +54,8 @@ class GymEquipment(models.Model):
 
     class Meta:
         db_table = 'gym_equipment_record'
+
+
 
 class SettingColorTable(models.Model):
   

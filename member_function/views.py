@@ -1,12 +1,16 @@
 from django.shortcuts import render, get_object_or_404,redirect,reverse
-from django.http import HttpResponse
-from django.db import connection
+
+from django.db.models import Q
 from datetime import date
-from .models import GymSale,LoginRecord,GymEquipment,SettingColorTable,SettingFontTable
-# Create your views ere.
+from .models import GymMember
+from function_gym.models import LoginRecord
+
+# Create your views here.
+
+
 from .forms import *
 
-from member_function.models import GymMember
+
 from django.contrib.auth import authenticate,login
 from django.shortcuts import render,redirect
 
@@ -24,79 +28,112 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+    
+
+
+
+#2/4/2025 updated
+@login_required
+def member_views(request):
+
+
+    '''this is for view all member details'''
+
+    #fetch data on models values that we needed
+    members_list = GymMember.objects.values('id','id_card','expiry','first_name','last_name','gender','profile_image',)
+
+    queary_card = request.GET.get('id_card')
+
+    if queary_card:
+        members_list =members_list.filter(Q(id_card__contains=queary_card))
+
+    paginator = Paginator(members_list,50)
+    page_number = request.GET.get('page')
+    members = paginator.get_page(page_number)
+    # we use this line if we want to compare the details in GymMember
+    today_date = date.today()
+
+    context = {'members':members,
+                'today_date':today_date}
+
+
+    return render(request,'member_list.html',context)
+
 
 @login_required
-def dash_board_views(request):
-    """ count gender number"""
+def member_update_views(request, member_id):
+    member = get_object_or_404(GymMember, id=member_id)
+    
+    expiry_form = GymMembersUpdateFormsExpiry(instance=member)
+    picture_form = GymMembersUpdateFormsPicture(instance=member)
 
-   
-    # this will count the gender of our members  
-    with connection.cursor() as cursor:
-        cursor.execute('SELECT gender,COUNT(*)AS count FROM gym_members GROUP BY gender')
-        results = cursor.fetchall()
+    today_date = date.today()
 
+    if request.method == 'POST':
+        if 'expiry_submit' in request.POST:
+            expiry_form =GymMembersUpdateFormsExpiry(request.POST,instance=member)
+            if expiry_form.is_valid():
+                expiry_form.save()
+                return redirect('member_views')
+        elif 'picture_submit' in request.POST:
+            picture_form = GymMembersUpdateFormsPicture(request.POST,request.FILES,instance=member)
+            if picture_form.is_valid():
+                picture_form.save()
+                return redirect('member_views')
+            
+    context = {
+        'expiry_form':expiry_form,
+        'picture_form':picture_form,
+        'member':member,
+        'today_date':today_date
+    }
 
-    with connection.cursor() as cursor:
-        cursor.execute('SELECT SUM(total_sale) FROM sale_table')
-        results3 = cursor.fetchone()  # Add parentheses to fetchall()
-
+    return render(request, 'update_member.html', context)
     
 
-    total_sales = results3[0] if results3 and results3[0] is not None else 0
-
-    today = date.today().strftime("%Y-%m-%d") #display date today
-
-
-
-    total_member_count = GymMember.objects.count()
-    print(f'member count:{total_member_count}')
-
-    total_renewed_count = GymMember.objects.filter(renewed=True).count()
-    print(f'renewed member:{total_renewed_count}')
-
-
-    percentage_renewed = (total_renewed_count / total_member_count) * 100
-  
-  
-
-    expired_members = GymMember.objects.filter(expiry__lt=today).count # get the list of member expired
-    active_members = GymMember.objects.filter(expiry__gte=today).count # get the list of member active now
-  
-
-    
-
-
-    #count gender
-    gender_count =[{'gender':row[0],'count':row[1]} for row in results]
+@login_required
+def member_login(request):
+    if request.method == 'POST':
+        id_card = request.POST.get('id_card')
 
 
 
+        # using now() to get current time
+        current_time_ph = datetime.datetime.now(pytz.timezone('Asia/Manila'))
+        
+        current_date_formated = current_time_ph.strftime('%Y-%m-%d')
+        current_time_formated = current_time_ph.strftime('%H:%M:%S')
 
-    #count our new member in past 30 days
-    last_30_days = date.today() - timedelta(days=30)
-    new_member = GymMember.objects.filter(join_date__gte=last_30_days).count
-    
-    
-    
+        try:
+            #fetch the member provided by our id
+            member = GymMember.objects.get(id_card=id_card)
 
-    context ={'gender_count':gender_count,
-              'total_member_count':total_member_count,
-              'today':today,
-              'expired_members':expired_members,
-              'active_members':active_members,
-              'expired_members':expired_members,
-              'total_sales':total_sales,
-              'new_member':new_member,
-              'percentage_renewed':percentage_renewed,
-              'total_renewed_count':total_renewed_count
-              }
+            if LoginRecord.objects.filter(id_card=member.id_card,login_date=current_date_formated).exists():
+
+                return render(request,'member_login.html',{
+                    'error':f'ID card was already login this day {current_date_formated}',
+                    'member':member
+                })
 
 
-    return render(request,'dashboard.html',context) 
+            LoginRecord.objects.create(
+                id_card=member.id_card,
+                first_name=member.first_name,
+                last_name=member.last_name,
+                login_time = current_time_formated,
+                login_date = current_date_formated
+            )
 
-
-
-
+            # Render a success template or return details
+            return render(request, 'member_login.html', {
+                'member': member
+            })
+        except GymMember.DoesNotExist:
+            # If the ID card is not found, return an error
+            return render(request, 'member_login.html', {
+                'error': 'Invalid ID Card. Please try again.'
+            })
+    return render(request, 'member_login.html')
 
 @login_required
 def login_record_views(request):
@@ -106,6 +143,21 @@ def login_record_views(request):
 
     return render(request,'login_record.html',context)
 
+@login_required
+def member_register(request):
+    if request.method == 'POST':
+        form = MemberRegisterForm(request.POST,request.FILES)
+        if form.is_valid():
+            member = form.save()
+            return redirect('member_register_successful_views',member_id=member.id)
+        else:
+            print(form.errors)
+    else:
+        form = MemberRegisterForm()
+
+    context = {'form':form}
+
+    return render(request,'member_register.html',context)
 
 @login_required
 def member_register_successful_views(request,member_id):
@@ -113,100 +165,13 @@ def member_register_successful_views(request,member_id):
     context = {'member':member}
     return render(request,'member_register_successful.html',context)
 
-@login_required
-def equipment_record_views(request):
-    
-    equipment_record = GymEquipment.objects.all()
-
-    # it will only show first 8 in pagination
-    paginator = Paginator(equipment_record,8)
-
-    page_number =request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {'equipment_record':equipment_record,'page_obj':page_obj}
-
-
-    return render(request,'gym_equipment_record.html',context)
-
-
-@login_required
-def equipment_record_detail_views(request,equipment_id):
-    equipment_record_detail = get_object_or_404(GymEquipment,id=equipment_id)
-
-    context = {'equipment_record_detail':equipment_record_detail}
-
-    return render(request,'gym_equipment_record_detail.html',context)
-@login_required
-def gym_sale_views(request):
-    
-    sale = GymSale.objects.all()
-    context = {'sale':sale}
-
-    return render(request,'sale_gym.html',context)
-
-
-@login_required
-def background_color_form_views(request):
-    # Default background color
-    selected_color = SettingColorTable.objects.filter(active=1).first()
-    selected_font  = SettingFontTable.objects.filter(active=1).first()
-
-    color_form = SettingColorForm(request.POST or None)
-    font_form = SettingFontForm(request.POST or None)
-
-    if request.method == 'POST':
-        if 'color_submit' in request.POST:
-            color_form = SettingColorForm(request.POST)
-            if color_form.is_valid():
-                # Deactivate all current colors
-                SettingColorTable.objects.all().update(active=0)
-                # Get the selected color ID from the form
-                selected_color =color_form.cleaned_data['color']
-        
-                # Retrieve the selected color object
-                # Set the selected color as active and save it
-                selected_color.active = 1
-                selected_color.save()
-                # Render the template with the updated color
-            return redirect('background_color_form_views')
-        elif 'font_submit' in request.POST:
-            font_form = SettingFontForm(request.POST)
-            if font_form.is_valid():
-                SettingFontTable.objects.all().update(active=0)
-                selected_font = font_form.cleaned_data['font']
-                font_form = selected_font
-                selected_font.active = 1
-                selected_font.save()
-            return redirect('background_color_form_views')
-
-    return render(request, 'color_background.html', {
-        'color_form': color_form,
-        'font_form': font_form,
-        'selected_color': selected_color,
-        'selected_font': selected_font
-    })
 
 
 
 
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
 
-def user_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            login(request, user)
-            return redirect('dash_board_views')
-        else:
-            return render(request, 'login.html', {'error': 'Remember your username'})
-        
-    return render(request, 'login.html')
 
 
 

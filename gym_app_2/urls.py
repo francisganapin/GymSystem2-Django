@@ -22,7 +22,8 @@ from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', include("function_gym.urls"))
+    path('', include("function_gym.urls")),
+    path('', include("member_function.urls")),
 ]
 
 if settings.DEBUG:

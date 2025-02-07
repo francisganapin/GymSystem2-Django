@@ -19,24 +19,22 @@ cursor.execute("USE gym_db_2_django")
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS sale_table (
     id INT AUTO_INCREMENT PRIMARY KEY,      
-    id_card VARCHAR(255),                   -- Foreign key connecting to gym_members table
     sale_date DATE NOT NULL,                
     payment_method VARCHAR(255) NOT NULL,   
-    sale_price DECIMAL(10, 2) NOT NULL,     -- Corrected to store prices as decimal
-    expiry DATE
+    total_sale INT NOT NULL    -- 2/5/2025 We update this to int since we wont add decimal
 );
 """)
 
 # Sample member data for insertion
 member_data = [
-    ('IDLOVE1', '2025-01-01', 'Gcash', 1600.00, '2025-02-01'),
-    ('IDLOVE2', '2025-01-01', 'Gcash', 1600.00, '2025-01-01')
+    ('2025-01-01', 'Gcash', 1600),
+    ('2025-01-01', 'Gcash', 1600)
 ]
 
 # Execute the batch insert
 cursor.executemany('''
-INSERT INTO sale_table (id_card, sale_date, payment_method, sale_price, expiry)
-VALUES (%s, %s, %s, %s, %s)
+INSERT INTO sale_table ( sale_date, payment_method, total_sale)
+VALUES (%s, %s, %s,)
 ''', member_data)
 
 # Commit the transaction

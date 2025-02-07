@@ -1,0 +1,10 @@
+<form method="post">
+    {% csrf_token %}
+    <h3>Sale Details</h3>
+    {{ sale_form.as_p }}
+
+    <h3>Add Item to Sale</h3>
+    {{ item_form.as_p }}
+
+    <button type="submit">Submit Sale</button>
+</form>
