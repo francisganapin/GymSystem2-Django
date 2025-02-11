@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Equipment Details{% endblock %}
+
+{% block content %}
+
+<style> 
+    .custom-img {
+        max-width: 20%;
+        transition: transform 0.2s ease;
+    }
+    .custom-img:hover {
+        transform: scale(1.1);
+    }
+    .card {
+        background-color: #ff7f7f;
+        border-radius: 15px;
+    }
+    .card-title {
+        font-size: 2em;
+        font-weight: bold;
+    }
+    .card-text {
+        font-size: 1.2em;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+</style>
+
+<div class="container px-4 mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body text-center">
+            <h2 class="card-title">{{ equipment_record_detail.name }}</h2>
+            <p class="card-text">{{ equipment_record_detail.description }}</p>
+            <img src="/media/{{ equipment_record_detail.picture }}" alt="{{ equipment_record_detail.name }}" class="img-fluid rounded mx-auto d-block custom-img">
+        </div>
+    </div>
+</div>
+
+{% endblock %}

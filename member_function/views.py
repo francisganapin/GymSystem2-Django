@@ -43,7 +43,7 @@ def member_views(request):
     members_list = GymMember.objects.values('id','id_card','expiry','first_name','last_name','gender','profile_image',)
 
     queary_card = request.GET.get('id_card')
-
+    #get filter the queary base on what we search
     if queary_card:
         members_list =members_list.filter(Q(id_card__contains=queary_card))
 
@@ -125,7 +125,7 @@ def member_login(request):
             )
 
             # Render a success template or return details
-            return render(request, 'member_login.html', {
+            return render(request, 'member/member_login.html', {
                 'member': member
             })
         except GymMember.DoesNotExist:

@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import date,timedelta
+from datetime import datetime, date, timedelta
 from django.db.models import F #2/5/2025 for item to address the stock
 
 class GymMember(models.Model):
@@ -15,7 +15,7 @@ class GymMember(models.Model):
 
     id_card = models.CharField(max_length=50, unique=True)
     expiry = models.DateField()
-    first_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100) 
     last_name = models.CharField(max_length=100)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     phone_number = models.CharField(max_length=15)
@@ -30,11 +30,17 @@ class GymMember(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.id_card})"
     
-    def save(self,*args,**kwargs):
+    def save(self, *args, **kwargs):
         today = date.today()
+        
+        # Ensure self.expiry is a datetime.date object
+        if isinstance(self.expiry, str):
+            self.expiry = datetime.strptime(self.expiry, '%Y-%m-%d').date()
+        
         if self.expiry > today + timedelta(days=20):
-           self.renewed = True
+            self.renewed = True
         else:
             self.renewed = False
-        super().save(*args,**kwargs)    
+        
+        super().save(*args, **kwargs)
         

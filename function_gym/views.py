@@ -146,6 +146,7 @@ def equipment_record_detail_views(request,equipment_id):
     context = {'equipment_record_detail':equipment_record_detail}
 
     return render(request,'gym_equipment_record_detail.html',context)
+
 @login_required
 def gym_sale_views(request):
     
@@ -198,7 +199,7 @@ def background_color_form_views(request):
 
 
 
-
+# insert this so we can authenticate login
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 
