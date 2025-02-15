@@ -14,18 +14,7 @@ cursor.execute("USE gym_db_2_django")
 
 
 
-# create table  gym_equipment_record
-cursor.execute("""
-CREATE TABLE gym_equipment_record (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    description varchar(100),
-    stock INT,
-    picture varchar(100)
-    
-    
-);
-""")
+
 
 
 
