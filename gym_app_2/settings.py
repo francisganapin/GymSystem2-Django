@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "function_gym",
-    "member_function",
+    "function.function_gym",
+    "function.member_function",
+    "function.sale_function",
+    'function.setting_function'
 ]
 
 MIDDLEWARE = [
@@ -81,8 +83,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'function_gym.setting_color_processor.background_color_context',
-                'function_gym.setting_font_processor.font_family_context'
+                'function.setting_function.setting_color_processor.background_color_context',
+                'function.setting_function.setting_font_processor.font_family_context'
             ],
         },
     },

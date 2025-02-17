@@ -22,8 +22,10 @@ from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', include("function_gym.urls")),
-    path('', include("member_function.urls")),
+    path('', include("function.function_gym.urls")),
+    path('',include("function.sale_function.urls")),
+    path('',include('function.setting_function.urls')),
+    path('', include("function.member_function.urls")),
 ]
 
 if settings.DEBUG:

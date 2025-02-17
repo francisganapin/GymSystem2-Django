@@ -31,7 +31,7 @@ VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
 # Batch insert records
 data = []
 for _ in range(20000):
-    id_card = fake.unique.uuid4()[:50]
+    id_card = fake.unique.uuid4()[:10]
     expiry = fake.date_between(start_date="today", end_date="+2y").strftime("%Y-%m-%d")
     first_name = fake.first_name()
     last_name = fake.last_name()
