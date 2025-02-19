@@ -29,7 +29,7 @@
             <div class="text-center">
                 <img src="{{ member.profile_image.url }}" alt="Profile" class="h-36 w-36 rounded-full mx-auto border border-pink-200">
 
-                <h2 class="text-xl font-bold text-gray-700 mb-2">Welcome, {{ member.first_name }} {{ member.last_name }}</h2>
+                <h2 class="text-xl font-bold text-gray-700 mb-2">{{ member.first_name }} {{ member.last_name }}</h2>
                 <strong><p class="text-gray-600"><strong>ID Card:</strong> {{ member.id_card }}</p></strong>
 
             {% if member.expiry < today_date %}

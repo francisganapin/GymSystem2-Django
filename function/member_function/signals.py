@@ -20,7 +20,7 @@ def create_default_settings(sender, **kwargs):
             'address': 'address_well',
             'join_date': '2025-01-25',
             'renewed': 0,
-            'profile_image': 'profile',
+            'profile_image': 'media/images/nofaces.jpeg',
         }
     ]
 

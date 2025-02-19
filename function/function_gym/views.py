@@ -98,11 +98,6 @@ def dash_board_views(request):
 
 
 
-@login_required
-def member_register_successful_views(request,member_id):
-    member = GymMember.objects.get(id=member_id)
-    context = {'member':member}
-    return render(request,'member/member_register_successful.html',context)
 
 @login_required
 def equipment_record_views(request):

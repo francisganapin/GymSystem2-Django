@@ -1,4 +1,12 @@
 Change Log
+2/19/2025
+	update sale input have list and input in one page 
+
+2/16/2025 
+	updated data automatic insert data using signals for each function
+
+2/8/2025 
+	update login ui record
 
 
 February 8,2025

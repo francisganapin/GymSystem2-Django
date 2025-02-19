@@ -104,13 +104,15 @@ def member_login(request):
         current_date_formated = current_time_ph.strftime('%Y-%m-%d')
         current_time_formated = current_time_ph.strftime('%H:%M:%S')
 
+        today_date = date.today()
+
         try:
             #fetch the member provided by our id
             member = GymMember.objects.get(id_card=id_card)
 
             if LoginRecord.objects.filter(id_card=member.id_card,login_date=current_date_formated).exists():
 
-                return render(request,'member_login.html',{
+                return render(request,'member/member_login.html',{
                     'error':f'ID card was already login this day {current_date_formated}',
                     'member':member
                 })
@@ -126,11 +128,12 @@ def member_login(request):
 
             # Render a success template or return details
             return render(request, 'member/member_login.html', {
-                'member': member
+                'member': member,
+                'today_date':today_date
             })
         except GymMember.DoesNotExist:
             # If the ID card is not found, return an error
-            return render(request, 'member_login.html', {
+            return render(request, 'member/member_login.html', {
                 'error': 'Invalid ID Card. Please try again.'
             })
     return render(request, 'member/member_login.html')
@@ -156,9 +159,6 @@ def login_record_views(request):
     context = {'login_record_details':login_record_details}
 
     return render(request,'login_record.html',context)
-
-
-
 
 
 

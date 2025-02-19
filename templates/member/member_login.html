@@ -20,7 +20,8 @@
 
         .login-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 700px;
+            min-height:600px;
             background: #ffffff;
             padding: 30px 40px;
             border-radius: 10px;
@@ -110,14 +111,34 @@
          
         margin: 0 auto; /* Centers the image horizontally */
         display: block; /* Ensures it behaves as a block element for margin centering */
-        width: 100px;
-        height: 100px;
+        width: 200px;
+        height: 200px;
         object-fit: cover;
         border-radius: 50%;
         margin-bottom: 10px;
         border: 3px solid #3b82f6;
 
         }
+        .label_class {
+            font-size: 36px; 
+        
+        }
+
+        .label_class {
+        font-size: 24px; /* Adjust the font size as needed */
+        font-family: Arial, sans-serif;
+        color: #333;
+        }
+
+        .label_class h2 {
+        font-size: 32px; /* Adjust the font size for the heading */
+        }
+        
+        .label_class p {
+        margin: 5px 0; /* Add some margin for better spacing */
+        font-size: 26px;
+        }
+
     </style>
 </head>
 
@@ -128,7 +149,7 @@
 
             <!-- Error messages -->
             {% if error %}
-                <p style="color: red;">{{ error }}</p>
+                <p  id='error_label' style="color: red; font-size:26px;">{{ error }}</p>
             {% endif %}
 
             {% if form.errors %}
@@ -146,9 +167,19 @@
                     <div style="justify-content: center;">
                         <img src="/media/{{ member.profile_image }}" alt="Profile Image">
                     </div>
-                    <h2>Welcome, {{ member.first_name }} {{ member.last_name }}</h2>
-                    <p><strong >ID Card:</strong> {{ member.id_card }}</p>
-                    <p><strong>Expiry Date:</strong> {{ member.expiry }}</p>
+                        <div class="label_class">
+                            <h2>Welcome, {{ member.first_name }} {{ member.last_name }}</h2>
+                            <p><strong >ID Card:</strong> {{ member.id_card }}</p>
+                            <p><strong>Expiry Date:
+
+                            {% if member.expiry < today_date %}
+                                <span style="color: red"><strong>Expired</strong></span>
+                            {% else %}
+                                <span style="color: green"><strong>{{ member.expiry }}</strong></span>
+                            {% endif %}
+                            
+                            </p>
+                        </div>
                 </div>
             {% endif %}
 
@@ -175,8 +206,18 @@
             </form>
         </div>
     </div>
-
 </html>
+
+
+<script>
+    const myTimeout = setTimeout(clrval, 3000);
+         
+         function clrval() {
+           document.getElementById("error_label").innerText ="";
+         }
+ 
+</script>
+
 
 {% endblock %}
 
