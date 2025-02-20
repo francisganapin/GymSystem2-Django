@@ -1,4 +1,6 @@
 Change Log
+2/20/2025 v1.11
+	update input for ui and product with update price,stock 
 2/19/2025
 	update sale input have list and input in one page 
 

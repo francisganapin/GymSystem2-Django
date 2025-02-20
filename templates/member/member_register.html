@@ -5,140 +5,172 @@
 {% block content %}
 
 
-<form method="post" action="{% url 'member_register' %}" enctype="multipart/form-data" style="max-width: 400px; max-height:800px; margin: 0 auto; background: pink; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-    {% csrf_token %}
-    
-    <!-- ID Card -->
-    <div style="margin-bottom: 15px;">
-        <label for="id_card" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">ID Card:</label>
-        <input 
-            type="text" 
-            id="id_card" 
-            name="id_card" 
-            value="{{ form.id_card.value|default:'' }}" 
-            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-            required
-        >
 
-    {% if form.id_card.errors %}
-        <ul>
-            {% for error in form.id_card.errors %}
-                    <li style="color:red">{{error}}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+        max-width: 800px;
+        margin: 40px auto;
+    }
+
+    .form-container {
+        background-color: #ffffff;
+        padding: 30px 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+    }
+
+    .form-container:hover {
+        transform: scale(1.01);
+    }
+
+    h2 {
+        text-align: center;
+        color: #2d3436;
+        margin-bottom: 24px;
+        font-weight: 700;
+        font-size: 24px;
+    }
+
+    form {
+        max-width: 100%;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #34495e;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="tel"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 16px;
+        border: 1px solid #dfe6e9;
+        border-radius: 10px;
+        font-size: 15px;
+        background-color: #f9f9f9;
+        color: #2d3436;
+        transition: border-color 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: #0984e3;
+        outline: none;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    select {
+        background-color: #f9f9f9;
+    }
+
+    .error-list {
+        margin-top: -12px;
+        margin-bottom: 8px;
+        color: #e74c3c;
+        font-size: 13px;
+    }
+
+    input[type="file"] {
+        background-color: #f1f2f6;
+        cursor: pointer;
+    }
+
+    input[type="submit"] {
+        background-color: #00b894;
+        color: #fff;
+        padding: 14px;
+        border: none;
+        width: 100%;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #019875;
+    }
+
+    @media (min-width: 600px) {
+        .container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="form-container">
+        <h2>📦 Add New Member</h2>
+        <form method="post" action="{% url 'member_register' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="id_card">ID Card</label>
+            <input type="text" id="id_card" name="id_card" value="{{ form.id_card.value|default:'' }}" required>
+            {% if form.id_card.errors %}
+                <ul class="error-list">
+                    {% for error in form.id_card.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <label for="expiry">Expiry Date</label>
+            <input type="date" id="expiry" name="expiry" value="{{ form.expiry.value|default:'' }}" required>
+
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" value="{{ form.first_name.value|default:'' }}" required>
+
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" value="{{ form.last_name.value|default:'' }}" required>
+
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="Male" {% if form.gender.value == "Male" %}selected{% endif %}>Male</option>
+                <option value="Female" {% if form.gender.value == "Female" %}selected{% endif %}>Female</option>
+            </select>
+
+            <label for="phone_number">Phone Number</label>
+            <input type="tel" id="phone_number" name="phone_number" value="{{ form.phone_number.value|default:'' }}" required>
+            {% if form.phone_number.errors %}
+                <ul class="error-list">
+                    {% for error in form.phone_number.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <label for="address">Address</label>
+            <textarea id="address" name="address" required>{{ form.address.value|default:'' }}</textarea>
+
+            <label for="profile_image">Profile Image</label>
+            <input type="file" id="profile_image" name="profile_image" accept="image/*">
+
+            <input type="submit" value="Submit">
+        </form>
     </div>
+</div>
 
 
 
-    <!-- Expiry -->
-    <div style="margin-bottom: 15px;">
-        <label for="expiry" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Expiration Date:</label>
-        <input 
-            type="date" 
-            id="expiry" 
-            name="expiry" 
-            value="{{ form.expiry.value|default:'' }}" 
-            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-            required
-        >
-    </div>
 
-    <!-- First Name -->
-    <div style="margin-bottom: 15px;">
-        <label for="first_name" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">First Name:</label>
-        <input 
-            type="text" 
-            id="first_name" 
-            name="first_name" 
-            value="{{ form.first_name.value|default:'' }}" 
-            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-            required
-        >
-    </div>
 
-    <!-- Last Name -->
-    <div style="margin-bottom: 15px;">
-        <label for="last_name" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Last Name:</label>
-        <input 
-            type="text" 
-            id="last_name" 
-            name="last_name" 
-            value="{{ form.last_name.value|default:'' }}" 
-            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-            required
-        >
-    </div>
-
-    <!-- Gender -->
-    <div style="margin-bottom: 15px;">
-        <label for="gender" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Gender:</label>
-        <select 
-            id="gender" 
-            name="gender" 
-            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-        >
-            <option value="" disabled selected>Select Gender</option>
-            <option value="Male" {% if form.gender.value == "Male" %}selected{% endif %}>Male</option>
-            <option value="Female" {% if form.gender.value == "Female" %}selected{% endif %}>Female</option>
-        </select>
-    </div>
-
-    <!-- Phone Number -->
-    <div style="margin-bottom: 15px;">
-        <label for="phone_number" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Phone Number:</label>
-        <input 
-            type="tel" 
-            id="phone_number" 
-            name="phone_number" 
-            value="{{ form.phone_number.value|default:'' }}" 
-            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-            required
-        >
-
-    {% if form.phone_number.errors %}
-        <ul>
-            {% for error in form.phone_number.errors %}
-                    <li style="color:red">{{error}}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    
-
-    </div>
-
-    <!-- Address -->
-    <div style="margin-bottom: 15px;">
-        <label for="address" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Address:</label>
-        <textarea 
-            id="address" 
-            name="address" 
-            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-            required
-        >{{ form.address.value|default:'' }}</textarea>
-    </div>
-
-    <!-- Profile Image -->
-    <div style="margin-bottom: 15px;">
-        <label for="profile_image" style="display: block; font-size: 14px; font-weight: 500; color: #374151;">Profile Image:</label>
-        <input 
-            type="file" 
-            id="profile_image" 
-            name="profile_image" 
-            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px; color:black;"
-            accept="image/*"
-        >
-    </div>
-
-    <!-- Submit Button -->
-    <div>
-        <input 
-            type="submit" 
-            value="Submit" 
-            style="width: 100%; padding: 10px; background: #3b82f6; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-align: center;"
-        >
-    </div>
-</form>
 
 {% endblock %}

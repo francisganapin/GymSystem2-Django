@@ -1,153 +1,366 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
 
-    <style>
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 30px;
+        max-width: 1400px;
+        margin: auto;
+    }
+
+    .form-container, .product-list {
+        background-color: #ffffff;
+        padding: 24px 28px;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease;
+        color:black;
+    }
+    .form-container-modal{
+        background-color: #ffffff;
+        padding: 24px 28px;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease;
+        color:black;
+    }
+
+
+    .form-container:hover, .product-list:hover {
+        transform: scale(1.02);
+    }
+
+    h2, h3 {
+        text-align: center;
+        color: #2d3436;
+        margin-bottom: 22px;
+        font-weight: 600;
+    }
+
+    label {
+        display: block;
+        margin: 12px 0 6px;
+        font-weight: 500;
+        color: #636e72;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #dfe6e9;
+        border-radius: 10px;
+        font-size: 15px;
+        color: #2d3436;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus {
+        border-color: #0984e3;
+        outline: none;
+    }
+
+    input[type="submit"] {
+        background-color: #00b894;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        margin-top: 16px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #019875;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 14px 12px;
+        border: 1px solid #ecf0f1;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f1f2f6;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    tr:hover {
+        background-color: #dff9fb;
+        transition: background-color 0.2s ease;
+    }
+
+    .action-icons {
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .action-icons span:hover {
+        color: #0984e3;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 24px;
+        gap: 12px;
+    }
+
+    .pagination a {
+        padding: 10px 16px;
+        border: 1px solid #dcdde1;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #2d3436;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+    }
+
+    .pagination a:hover {
+        background-color: #dfe6e9;
+    }
+
+    .pagination .current {
+        font-weight: 700;
+        color: #00b894;
+    }
+
+
+
+    .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+
+
+</style>
+
+
+
+
+
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <!-- i want to changes the id p here base on value of my clicked button-->
+        <label id="pText" for="stock">Update Details</label>
+     
+        <input id="displayInput" type="number" name="id" readonly>
+
+        <label for="stock">Update Details</label>
+        <input id="stock" type="number" name="stock" value="{{ form.stock.value|default:'' }}" placeholder="Enter stock quantity">
+
+        <input type="submit" name="update_product" value="Update Stock">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+    </form>
     
-        .form-container, .product-list {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        .form-container h2, .product-list h3 {
-            text-align: center;
-            color: #333;
-        }
-        .form-container label {
-            display: block;
-            margin: 10px 0 5px;
-            color: #333;
-        }
-        .form-container input[type="text"],
-        .form-container input[type="email"],
-        .form-container input[type="password"],
-        .form-container input[type="number"],
-        .form-container textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            color: black;
-        }
-        .form-container input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        .form-container input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        .product-list table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .product-list table th,
-        .product-list table td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: left;
-            color:black;
-        }
-        .product-list table th {
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .product-list table tr:nth-child(even) {
-            background-color: #f9f9f9;
-            
-        }
-        .product-list table tr:hover {
-            background-color: #f1f1f1;
-        }
+  </div>
 
-
-
-        .row {
-        margin-left:-5px;
-        margin-right:-5px;
-        }
-        
-        .column {
-        float: left;
-        width: 50%;
-        padding: 5px;
-        }
-
-        /* Clearfix (clear floats) */
-        .row::after {
-        content: "";
-        clear: both;
-        display: table;
-        }
-
-
-
-
-    </style>
-<div class="row">
-    <div class="column">
-        <div class="body_div">
-            <div class="form-container">
-                <h2>Product Input</h2>
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <label for="name">Product Name</label>
-                    <input id="name" type="text" name="name" value="{{ form.name.value|default:'' }}">
-
-                    <label for="description">Description</label>
-                    <input id="description" type="text" name="description" value="{{ form.description.value|default:'' }}">
-
-                    <label for="price">Price</label>
-                    <input id="price" type="number" name="price" value="{{ form.price.value|default:'' }}">
-
-
-                    <label for="stock">Stock</label>
-                    <input id="stock" type="number" name="stock" value="{{ form.stock.value|default:'' }}">
-
-                    <input type="submit" value="Submit">
-                </form>
-            </div>
-    </div>
 </div>
-<div class="row">
-        <div class="column">
-            <div class="product-list">
-                <h3>Product List</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for products in products %}
-                        <tr>
-                            <td>{{ products.name }}</td>
-                            <td>{{ products.description }}</td>
-                            <td>{{ products.price }}</td>
-                            <td>{{ products.stock }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+<div class="container">
+    <div class="form-container">
+        <h2>📦 Add New Product</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="name">Product Name</label>
+            <input id="name" type="text" name="name" value="{{ form.name.value|default:'' }}" placeholder="Enter product name">
+
+            <label for="description">Description</label>
+            <input id="description" type="text" name="description" value="{{ form.description.value|default:'' }}" placeholder="Enter description">
+
+            <label for="price">Price ($)</label>
+            <input id="price" type="number" name="price" value="{{ form.price.value|default:'' }}" placeholder="Enter price">
+
+            <label for="stock">Stock Quantity</label>
+            <input  id="display" id="stock" type="number" name="stock" value="{{ form.stock.value|default:'' }}" placeholder="Enter stock quantity">
+
+            <input type="submit" name="add_product" value="➕ Add Product">
+        </form>
+    </div>
+
+    <div class="product-list">
+        <h3>📝 Product List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price ($)</th>
+                    <th>Stock</th>
+                    <th>Up Stock</th>
+                    <th>Up Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.stock }}</td>
+                    <!-- Buttons with onclick to change text -->
+                    
+                    <td>
+                        <button class="myBtn" data-id="{{ product.id }}" data-message="Update Your Stock, {{ product.name }} Stock Current:{{ product.stock }}" title="Stock" onclick="changeText(this)">📦</button>
+                    </td>
+                    <td>
+                        <button class="myBtn" data-id="{{ product.id }}" data-message="Update Your Price, Name:{{ product.name }}  Price Current:{{ product.price }}" title="Price" onclick="changeText(this)">💷</button>
+                    </td>
+
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No products available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            {% if products.has_previous %}
+                <a href="?page=1">⏮️ First</a>
+                <a href="?page={{ products.previous_page_number }}">⬅️ Previous</a>
+            {% endif %}
+
+            <span class="current">Page {{ products.number }} of {{ products.paginator.num_pages }}</span>
+
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}">Next ➡️</a>
+                <a href="?page={{ products.paginator.num_pages }}">Last ⏭️</a>
+            {% endif %}
         </div>
     </div>
 </div>
+
+
+
+<script>
+    // Get the modal and close button
+    var modal = document.getElementById("myModal");
+    var span = document.getElementsByClassName("close")[0];
+
+    // Get all buttons that open the modal
+    var btns = document.querySelectorAll(".myBtn");
+
+    // Single loop to handle modal open and value passing
+    btns.forEach(function(btn) {
+        btn.onclick = function() {
+            handleButtonClick(btn);
+        };
+    });
+
+    // Function to handle button click
+    function handleButtonClick(button) {
+        const productId = button.getAttribute('data-id');  // Get product ID
+        const message = button.getAttribute('data-message');  // Get message
+
+        // Pass ID to input
+        addCart(productId);
+        
+        // Change the <p> text
+        changeText(message);
+
+        // Show modal
+        modal.style.display = "block";
+    }
+
+    // Close modal when 'x' is clicked
+    span.onclick = function() {
+        modal.style.display = "none";
+    };
+
+    // Close modal when clicking outside the modal
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    // Function to assign value to input
+    function addCart(productId) {
+        document.getElementById('displayInput').value = productId;
+        console.log(`Product ID set to: ${productId}`);
+    }
+
+    // Function to change the text of the <p> element
+    function changeText(message) {
+        document.getElementById('pText').textContent = message;
+        console.log(`Product message set to: ${message}`);
+    }
+</script>
+
 
 
 

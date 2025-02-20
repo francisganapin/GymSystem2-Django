@@ -3,185 +3,170 @@
 {% block title %}Classes{% endblock %}
 
 {% block content %}
-
 <style>
-  
-/* Member List Styling */
-.member-list {
-    padding-right: 100px;
-    margin-left: -160px; /* Shift left */
-}
+    .product-list {
+        background-color: #ffffff;
+        padding: 20px 24px; /* Reduced padding */
+        border-radius: 14px;
+        max-width: 900px; /* Smaller width */
+        margin: 0 auto; /* Center the container */
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease;
+        color: black;
+    }
 
-/* Scrollable Content */
-.overflow-auto {
-    max-height: 600px; /* Limit height for scrolling */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Disable horizontal scrolling */
-}
+    .product-list:hover {
+        transform: scale(1.01);
+    }
 
-/* Pagination Styling */
-.pagination {
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
+    h2, h3 {
+        text-align: center;
+        color: #2d3436;
+        margin-bottom: 18px;
+        font-weight: 600;
+    }
 
-.pagination a {
-    display: inline-block;
-    padding: 10px 15px;
-    color: #fff;
-    background-color: #6d2e46;
-    border-radius: 25px;
-    text-decoration: none;
-    transition: background-color 0.3s, box-shadow 0.3s;
-}
+    form {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
 
-.pagination a:hover {
-    background-color: #C06C84;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
+    input[type="text"] {
+        width: 60%;
+        padding: 10px 12px;
+        border: 1px solid #dfe6e9;
+        border-radius: 8px;
+        font-size: 14px;
+        background-color: #f9f9f9;
+    }
 
-.pagination .current {
-    padding: 10px 15px;
-    background-color: #C06C84;
-    color: white;
-    border-radius: 25px;
-    font-weight: bold;
-}
+    input[type="submit"], button {
+        padding: 10px 16px;
+        font-size: 14px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
 
-.pagination .disabled {
-    display: inline-block;
-    padding: 10px 15px;
-    color: #aaa;
-    background-color: #f0f0f0;
-    border-radius: 25px;
-    cursor: not-allowed;
-}
+    table {
+        width: 100%;
+        font-size: 13px; /* Slightly smaller font */
+        border-collapse: collapse;
+        margin-top: 12px;
+    }
 
-/* Mobile Responsive Design */
-@media only screen and (max-width: 480px) {
-    .container {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    th, td {
+        padding: 10px;
+        border: 1px solid #ecf0f1;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f1f2f6;
+        font-weight: 600;
+    }
+
+    tr:hover {
+        background-color: #dff9fb;
+    }
+
+    .table-list {
+        max-height: 600px;
+        overflow: auto;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 18px;
         gap: 10px;
     }
 
-    .pagination a, .pagination .current {
-        font-size: 14px;
+    .pagination a {
         padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
     }
-}
+
+    .pagination .current {
+        font-weight: 700;
+        color: #00b894;
+    }
+
+    img.h-12 {
+        height: 40px;
+        width: 40px;
+    }
 </style>
 
+<div class="product-list">
+    <!-- Search Form -->
+    <form method="get" action="{% url 'member_views' %}">
+        <input type="text" name="id_card" value="{{ request.GET.id_card }}" placeholder="Enter ID">
+        <button type="submit" class="bg-blue-500 text-white hover:bg-blue-700">Search</button>
+    </form>
 
+    <h3>📝 Member List</h3>
 
-
-
-
-
-
-<div class="member-list">
-
-<div class="main-content p-8 bg-pink-50">
-
-
-    
-        <!-- Search Form -->
-        <form method="get" action="{% url 'member_views' %}" class="mb-4 flex justify-center space-x-2">
-
-    
-            <input 
-                class="w-1/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-black" 
-                type="text" name="id_card" value="{{ request.GET.id_card }}" placeholder="Enter ID">
-       
-            
-            <button 
-                type="submit" 
-                class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition">
-                Search
-            </button>
-        </form>
-  
-
-    <div class="overflow-auto max-h-350 border border-gray-400 rounded-md shadow-lg">
-        <table class="table-auto border-collapse w-full text-left">
-            <thead class="bg-gradient-to-r from-pink-200 to-pink-100 sticky top-0 shadow-sm">
+    <div class="table-list">
+        <table>
+            <thead>
                 <tr>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">ID</th>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">ID CARD</th>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Expiry</th>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">First Name</th>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Last Name</th>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Gender</th>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Profile</th>
-                    <th class="border border-gray-300 px-4 py-3 text-pink-900 font-semibold">Update</th>
-
+                    <th>ID</th>
+                    <th>ID CARD</th>
+                    <th>Expiry</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Gender</th>
+                    <th>Profile</th>
+                    <th>Update</th>
                 </tr>
             </thead>
-            <tbody class="bg-white">
+            <tbody>
                 {% for member in members %}
-                <tr class="hover:bg-pink-50 transition-colors duration-200">
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.id }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.id_card }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">
-
+                <tr>
+                    <td>{{ member.id }}</td>
+                    <td>{{ member.id_card }}</td>
+                    <td>
                         {% if member.expiry < today_date %}
                             <span style="color: red"><strong>Expired</strong></span>
                         {% else %}
                             <span style="color: green"><strong>{{ member.expiry }}</strong></span>
                         {% endif %}
                     </td>
-
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.first_name}}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.last_name }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ member.gender}}</td>
-
-
-                        <!-- Profile Image -->
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700 font-semibold text-center">
-                        <img src="/media/{{ member.profile_image }}" alt="Profile" 
-                            class="h-12 w-12 rounded-full mx-auto border border-pink-400">
+                    <td>{{ member.first_name }}</td>
+                    <td>{{ member.last_name }}</td>
+                    <td>{{ member.gender }}</td>
+                    <td>
+                        <img src="/media/{{ member.profile_image }}" alt="Profile" class="h-12 w-12 rounded-full mx-auto border border-pink-400">
                     </td>
-                    
-                    <!-- Update Icon -->
-                    <td class="border border-gray-300 px-4 py-2 text-gray-700 font-semibold text-center">
+                    <td>
                         <a href="{% url 'member_update_views' member.id %}" class="text-blue-500 hover:text-blue-700">
-                            <img src="/media/icon/edit.svg" alt="Edit" class="h-6 w-6 inline-block">
+                            <img src="/media/icon/edit.svg" alt="Edit" class="h-6 w-6">
                         </a>
                     </td>
                 </tr>
                 {% endfor %}
-                
             </tbody>
         </table>
-
-  
-
     </div>
-          <!--we add this to have option to paginate data on our member 2/4/2025-->
-          <div class="pagination">
-            <div class="">
-                {% if members.has_previous %}
-                    <a href="?page=1&id_card={{ request.GET.id_card }}">First</a>
-                    <a href="?page={{ members.previous_page_number }}">Previous</a>
-                {% endif %}
-    
-                <span class="current">
-                    Page {{ members.number }} of {{ members.paginator.num_pages }}
-                </span>
-    
-                {% if members.has_next %}
-                    <a href="?page={{ members.next_page_number }}&id_card={{ request.GET.id_card }}">Next</a>
-                    <a href="?page={{ members.paginator.num_pages }}&id_card={{ request.GET.id_card }}">Last</a>
-                {% endif %}
-            </div>
-        </div>
-</div>
-</div>
 
+    <div class="pagination">
+        {% if members.has_previous %}
+            <a href="?page=1&id_card={{ request.GET.id_card }}">⏮️ First</a>
+            <a href="?page={{ members.previous_page_number }}&id_card={{ request.GET.id_card }}">⬅️ Prev</a>
+        {% endif %}
 
+        <span class="current">Page {{ members.number }} of {{ members.paginator.num_pages }}</span>
 
+        {% if members.has_next %}
+            <a href="?page={{ members.next_page_number }}&id_card={{ request.GET.id_card }}">Next ➡️</a>
+            <a href="?page={{ members.paginator.num_pages }}&id_card={{ request.GET.id_card }}">Last ⏭️</a>
+        {% endif %}
+    </div>
 </div>
 
 
