@@ -87,7 +87,10 @@
                 <input 
                     class="w-1/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-black" 
                     type="text" name="id_card" value="{{ request.GET.id_card }}" placeholder="Enter ID">
-           
+
+                <input 
+                    class="w-1/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-black" 
+                    type="text" name="query_name" value="{{ request.GET.query_name }}" placeholder="Enter Name">
                 
                 <button 
                     type="submit" 
@@ -132,23 +135,28 @@
         </div>
           
         <!--we add this to have option to paginate data on our member 2/4/2025-->
-        <div class="pagination">
-            <div class="">
-                {% if login_record_details.has_previous %} <!--this should equal to our backend 2/8/2025-->
-                    <a href="?page=1&id_card={{ request.GET.id_card }}">First</a>
-                    <a href="?page={{ login_record_details.previous_page_number }}&id_card={{ request.GET.id_card }}">Previous</a>
-                {% endif %}
+        <div class="pagination flex justify-center space-x-2 mt-4">
+            {% if login_record_details.has_previous %}
+                <a href="?page=1&id_card={{ id_card|default:'' }}&query_name={{ query_name|default:'' }}" 
+                   class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition">First</a>
         
-                <span class="current">
-                    Page {{ login_record_details.number }} of {{ login_record_details.paginator.num_pages }}
-                </span>
+                <a href="?page={{ login_record_details.previous_page_number }}&id_card={{ id_card|default:'' }}&query_name={{ query_name|default:'' }}" 
+                   class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition">Previous</a>
+            {% endif %}
         
-                {% if login_record_details.has_next %}
-                    <a href="?page={{ login_record_details.next_page_number }}&id_card={{ request.GET.id_card }}">Next</a>
-                    <a href="?page={{ login_record_details.paginator.num_pages }}&id_card={{ request.GET.id_card }}">Last</a>
-                {% endif %}
-            </div>
+            <span class="px-3 py-2 bg-gray-300 rounded-lg">
+                Page {{ login_record_details.number }} of {{ login_record_details.paginator.num_pages }}
+            </span>
+        
+            {% if login_record_details.has_next %}
+                <a href="?page={{ login_record_details.next_page_number }}&id_card={{ id_card|default:'' }}&query_name={{ query_name|default:'' }}" 
+                   class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition">Next</a>
+        
+                <a href="?page={{ login_record_details.paginator.num_pages }}&id_card={{ id_card|default:'' }}&query_name={{ query_name|default:'' }}" 
+                   class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition">Last</a>
+            {% endif %}
         </div>
+    
         
     </div>
     </div>

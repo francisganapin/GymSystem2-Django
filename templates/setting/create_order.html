@@ -1,0 +1,12 @@
+
+
+<form method="post">
+    {% csrf_token %}
+    
+    {{order_form.as_p}}
+    {{set_form.management_form}}
+
+        {% for form in set_form %}
+            {{ form.as_p }}
+        {% endfor %}
+</form>

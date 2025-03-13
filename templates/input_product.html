@@ -149,9 +149,6 @@
         font-weight: 700;
         color: #00b894;
     }
-
-
-
     .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -216,6 +213,7 @@
      
         <input id="displayInput" type="number" name="id" readonly>
 
+
         <label for="stock">Update Details</label>
         <input id="stock" type="number" name="stock" value="{{ form.stock.value|default:'' }}" placeholder="Enter stock quantity">
 
@@ -258,8 +256,6 @@
                     <th>Description</th>
                     <th>Price ($)</th>
                     <th>Stock</th>
-                    <th>Up Stock</th>
-                    <th>Up Price</th>
                 </tr>
             </thead>
             <tbody>
@@ -268,16 +264,16 @@
                     <td>{{ product.id }}</td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.description }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.stock }}</td>
-                    <!-- Buttons with onclick to change text -->
                     
-                    <td>
-                        <button class="myBtn" data-id="{{ product.id }}" data-message="Update Your Stock, {{ product.name }} Stock Current:{{ product.stock }}" title="Stock" onclick="changeText(this)">📦</button>
-                    </td>
-                    <td>
+                    <td>{{ product.price }}
                         <button class="myBtn" data-id="{{ product.id }}" data-message="Update Your Price, Name:{{ product.name }}  Price Current:{{ product.price }}" title="Price" onclick="changeText(this)">💷</button>
                     </td>
+                    <td>
+                        {{ product.stock }} 
+                        <button class="myBtn" data-id="{{ product.id }}" data-message="Update Your Stock, {{ product.name }} Stock Current:{{ product.stock }}" title="Stock" onclick="changeText(this)">📦</button>
+                    </td>
+                    <!-- Buttons with onclick to change text -->
+                  
 
                 </tr>
                 {% empty %}

@@ -10,5 +10,5 @@ from django.contrib.auth import views as auth_views #input this auth_view to hav
 
 urlpatterns = [
     path('sale-dashboard/', views.gym_sale_views, name='gym_sale_views'),
-    path('input-product/',views.ProductInputView.as_view(),name='product_input_views')
+    path('input-product/',views.ProductInputView.as_view(),name='product_input_views'),
 ]

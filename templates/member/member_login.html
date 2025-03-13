@@ -19,11 +19,11 @@
         }
 
         .login-container {
-            width: 100%;
+            width: 80%;
             max-width: 700px;
-            min-height:600px;
+            min-height:300px;
             background: #ffffff;
-            padding: 30px 40px;
+            padding: 20px 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
@@ -68,7 +68,7 @@
         }
 
         .login-container input[type="text"] {
-            width: 100%;
+            width: 80%;
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #d1d5db;
@@ -86,7 +86,7 @@
         }
 
         .login-container input[type="submit"] {
-            width: 100%;
+            width: 80%;
             padding: 10px;
             border-radius: 5px;
             font-size: 14px;
@@ -111,8 +111,8 @@
          
         margin: 0 auto; /* Centers the image horizontally */
         display: block; /* Ensures it behaves as a block element for margin centering */
-        width: 200px;
-        height: 200px;
+        width: 150px;
+        height: 150px;
         object-fit: cover;
         border-radius: 50%;
         margin-bottom: 10px;
@@ -187,12 +187,13 @@
                 {% csrf_token %}
                 <!-- ID Card -->
                 <div>
-                    <label for="id_card" style="font-size: Larger;">ID Card:</label>
+                    
                     <input 
                         type="text" 
                         id="id_card" 
                         name="id_card" 
                         value="{{ form.id_card.value|default:'' }}" 
+                        placeholder="Enter ID Card"
                         required
                     >
                 </div>
@@ -210,12 +211,21 @@
 
 
 <script>
-    const myTimeout = setTimeout(clrval, 3000);
-         
-         function clrval() {
-           document.getElementById("error_label").innerText ="";
-         }
- 
+    // this script for clearing the login image
+    setTimeout(() => {
+        let errorLabel = document.getElementById("error_label");
+        if (errorLabel) {
+            errorLabel.innerText = "";
+        }
+    }, 3000);
+
+    // Clear member info after 15 seconds
+    setTimeout(() => {
+        let memberInfo = document.querySelector(".member-info"); 
+        if (memberInfo) {
+            memberInfo.innerHTML = ""; 
+        }
+    }, 15000);
 </script>
 
 

@@ -34,7 +34,7 @@ class OrderItem(models.Model):
 class TransactionDetail(models.Model):
     order = models.OneToOneField(OrderDetail, on_delete=models.CASCADE)
     payment_method = models.CharField(max_length=100)
-    trasaction_date = models.DateField(auto_created=True)
+    transaction_date = models.DateField(auto_now_add=True)
     total_payment = models.DecimalField(max_digits=10, decimal_places=2, editable=False)
 
     class Meta:
@@ -46,3 +46,5 @@ class TransactionDetail(models.Model):
 
     def __str__(self):
         return f"Transaction {self.id}"
+
+

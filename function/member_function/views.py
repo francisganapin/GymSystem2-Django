@@ -9,8 +9,6 @@ from function.member_function.models import GymMember, LoginRecord
 
 
 from .forms import *
-
-
 from django.contrib.auth import authenticate,login
 from django.shortcuts import render,redirect
 
@@ -18,7 +16,6 @@ from django.shortcuts import render,redirect
 # for now()
 import datetime
 
-from datetime import timedelta
 
 # for timezone()
 import pytz
@@ -42,10 +39,10 @@ def member_views(request):
     #fetch data on models values that we needed
     members_list = GymMember.objects.values('id','id_card','expiry','first_name','last_name','gender','profile_image',)
 
-    queary_card = request.GET.get('id_card')
+    query_card = request.GET.get('id_card')
     #get filter the queary base on what we search
-    if queary_card:
-        members_list =members_list.filter(Q(id_card__contains=queary_card))
+    if query_card:
+        members_list =members_list.filter(Q(id_card__contains=query_card))
 
     paginator = Paginator(members_list,15)
     page_number = request.GET.get('page')
@@ -147,19 +144,31 @@ def login_record_views(request):
     login_record = LoginRecord.objects.values('id_card','first_name','last_name','login_time','login_date')
 
     #get the queary card
-    queary_card = request.GET.get('id_card') 
+    query_card = request.GET.get('id_card') 
 
-    if queary_card:
-        login_record =  login_record.filter(Q(id_card__contains=queary_card))
+    #get the queary card
+    query_name = request.GET.get('query_name') 
+
+    if query_card:
+        login_record =  login_record.filter(Q(id_card__contains=query_card))
+    
+    #get query name search first name and last name
+    if query_name:
+        login_record = login_record.filter(Q(last_name__contains=query_name)|Q(first_name__contains=query_name))
 
     paginator = Paginator(login_record,5)
     page_number = request.GET.get('page')
     login_record_details = paginator.get_page(page_number)
 
-    context = {'login_record_details':login_record_details}
+    context = {
+
+               'login_record_details':login_record_details,
+               'id_card':query_card,
+               'query_name':query_name
+
+               }
 
     return render(request,'login_record.html',context)
-
 
 
 
@@ -178,6 +187,7 @@ def member_register(request):
     context = {'form':form}
 
     return render(request,'member/member_register.html',context)
+
 
 @login_required
 def member_register_successful_views(request,member_id):

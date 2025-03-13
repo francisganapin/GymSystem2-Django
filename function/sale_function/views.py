@@ -6,11 +6,14 @@ from django.core.paginator import Paginator
 from .models import TransactionDetail
 from django.db.models import Prefetch
 
-from .models import Product
+from .models import Product,OrderDetail,OrderItem
 from .forms import *
 
-from django.http import HttpResponseRedirect
+from django.forms import inlineformset_factory
+
 from django.views import View
+
+
 
 
 @login_required
@@ -68,9 +71,13 @@ class ProductInputView(View):
             setattr(product, field, value)  # Dynamically set 'stock' or 'price'
             product.save()
             message = f"{field.capitalize()} updated successfully!"
+            
         except Product.DoesNotExist:
             message = "Product not found."
         except Exception as e:
             message = f"Error: {str(e)}"
 
         return render(request, self.template_name, {'products': products, 'message': message})
+
+
+
