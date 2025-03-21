@@ -92,13 +92,6 @@ def dash_board_views(request):
     return render(request,'dashboard.html',context) 
 
 
-
-
-
-
-
-
-
 @login_required
 def equipment_record_views(request):
     
@@ -123,11 +116,6 @@ def equipment_record_detail_views(request,equipment_id):
     context = {'equipment_record_detail':equipment_record_detail}
 
     return render(request,'gym_equipment_record_detail.html',context)
-
-
-
-
-
 
 
 # insert this so we can authenticate login

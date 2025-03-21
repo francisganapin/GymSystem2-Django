@@ -106,6 +106,7 @@
     <!-- Search Form -->
     <form method="get" action="{% url 'member_views' %}">
         <input type="text" name="id_card" value="{{ request.GET.id_card }}" placeholder="Enter ID">
+        <input type="text" name="query_name" value="{{ request.GET.query_name }}" placeholder="Enter Name">
         <button type="submit" class="bg-blue-500 text-white hover:bg-blue-700">Search</button>
     </form>
 

@@ -25,10 +25,6 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-    
-
-
-
 #2/4/2025 updated
 @login_required
 def member_views(request):
@@ -39,10 +35,15 @@ def member_views(request):
     #fetch data on models values that we needed
     members_list = GymMember.objects.values('id','id_card','expiry','first_name','last_name','gender','profile_image',)
 
-    query_card = request.GET.get('id_card')
+    query_card = request.GET.get('id_card','').strip() #cut the white space
+    query_name = request.GET.get('query_name','').strip() # cut the white space
+
     #get filter the queary base on what we search
     if query_card:
         members_list =members_list.filter(Q(id_card__contains=query_card))
+
+    if query_name:
+        members_list = members_list.filter(Q(first_name__contains=query_name) | Q(last_name__contains=query_name))
 
     paginator = Paginator(members_list,15)
     page_number = request.GET.get('page')
@@ -169,8 +170,6 @@ def login_record_views(request):
                }
 
     return render(request,'login_record.html',context)
-
-
 
 @login_required
 def member_register(request):

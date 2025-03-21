@@ -1,5 +1,6 @@
-1
-Change Log
+3/21/2025
+	update member list search with cut space
+
 2/20/2025 v1.11
 	update input for ui and product with update price,stock 
 2/19/2025
