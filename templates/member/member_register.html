@@ -19,13 +19,14 @@
         border-radius: 20px;
         box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
         transition: transform 0.2s ease;
+        width:120%;
     }
 
     .form-container:hover {
         transform: scale(1.01);
     }
 
-    h2 {
+    .member-header {
         text-align: center;
         color: #2d3436;
         margin-bottom: 24px;
@@ -107,6 +108,17 @@
         background-color: #019875;
     }
 
+    ::file-selector-button{
+        border:2px solid black;
+        padding:5px 10px;
+        border-radius:5px;
+        background-color:lightgreen;
+    }
+    ::file-selector-button:hover{
+        background-color:salmon;
+        cursor:pointer;
+    }
+
     @media (min-width: 600px) {
         .container {
             grid-template-columns: repeat(2, 1fr);
@@ -116,7 +128,11 @@
 
 <div class="container">
     <div class="form-container">
-        <h2>📦 Add New Member</h2>
+        
+                <div class="member-header">
+                    <h2>📦 Add New Member</h2>
+                </div>
+
         <form method="post" action="{% url 'member_register' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="id_card">ID Card</label>
@@ -158,7 +174,7 @@
             <label for="address">Address</label>
             <textarea id="address" name="address" required>{{ form.address.value|default:'' }}</textarea>
 
-            <label for="profile_image">Profile Image</label>
+       
             <input type="file" id="profile_image" name="profile_image" accept="image/*">
 
             <input type="submit" value="Submit">

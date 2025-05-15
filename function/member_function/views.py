@@ -69,7 +69,7 @@ def member_update_views(request, member_id):
 
     if request.method == 'POST':
         if 'expiry_submit' in request.POST:
-            expiry_form =GymMembersUpdateFormsExpiry(request.POST,instance=member)
+            expiry_form = GymMembersUpdateFormsExpiry(request.POST,instance=member)
             if expiry_form.is_valid():
                 expiry_form.save()
                 return redirect('member_views')

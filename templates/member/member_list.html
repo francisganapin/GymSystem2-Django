@@ -4,11 +4,15 @@
 
 {% block content %}
 <style>
+
     .product-list {
         background-color: #ffffff;
         padding: 20px 24px; /* Reduced padding */
         border-radius: 14px;
-        max-width: 900px; /* Smaller width */
+        max-width: 800px; /* Smaller width */
+        min-width: 800px; 
+        min-height:700px;
+        max-height:700px;
         margin: 0 auto; /* Center the container */
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
         transition: transform 0.2s ease;
@@ -19,7 +23,7 @@
         transform: scale(1.01);
     }
 
-    h2, h3 {
+    h3 {
         text-align: center;
         color: #2d3436;
         margin-bottom: 18px;
@@ -93,7 +97,7 @@
 
     .pagination .current {
         font-weight: 700;
-        color: #00b894;
+        color: black;
     }
 
     img.h-12 {
@@ -104,13 +108,16 @@
 
 <div class="product-list">
     <!-- Search Form -->
+
+    
+    <h3>📝 Member List</h3>
+
+
     <form method="get" action="{% url 'member_views' %}">
         <input type="text" name="id_card" value="{{ request.GET.id_card }}" placeholder="Enter ID">
         <input type="text" name="query_name" value="{{ request.GET.query_name }}" placeholder="Enter Name">
         <button type="submit" class="bg-blue-500 text-white hover:bg-blue-700">Search</button>
     </form>
-
-    <h3>📝 Member List</h3>
 
     <div class="table-list">
         <table>
@@ -160,15 +167,15 @@
             <a href="?page=1&id_card={{ request.GET.id_card }}">⏮️ First</a>
             <a href="?page={{ members.previous_page_number }}&id_card={{ request.GET.id_card }}">⬅️ Prev</a>
         {% endif %}
-
+    
         <span class="current">Page {{ members.number }} of {{ members.paginator.num_pages }}</span>
-
+    
         {% if members.has_next %}
             <a href="?page={{ members.next_page_number }}&id_card={{ request.GET.id_card }}">Next ➡️</a>
             <a href="?page={{ members.paginator.num_pages }}&id_card={{ request.GET.id_card }}">Last ⏭️</a>
         {% endif %}
     </div>
-</div>
 
+</div>
 
 {% endblock %}
