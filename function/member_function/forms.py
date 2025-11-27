@@ -1,6 +1,6 @@
 from django import forms
 from .models import GymMember
-
+from datetime import date
 
 
 
@@ -55,8 +55,26 @@ class MemberRegisterForm(forms.ModelForm):
 
         return phone_number
     
+    def clean_profile_image(self):
+        profile_image = self.cleaned_data.get('profile_image')
 
+        if not profile_image:
+            raise forms.ValidationError('Profile Image is required')
 
+        return profile_image    
+
+    def clean_expiry(self):
+        expiry = self.cleaned_data.data('expiry')
+
+        if not expiry:
+            raise forms.ValidationError('Expiry date is required')
+        
+        today = date.today()
+
+        if expiry < today:
+            raise forms.ValidationError('Expiry date cannot be in the past')
+        
+        return expiry
 
 class GymMembersUpdateFormsExpiry(forms.ModelForm):
     class Meta:
